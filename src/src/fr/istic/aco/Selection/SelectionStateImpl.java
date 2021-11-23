@@ -7,8 +7,10 @@ package fr.istic.aco.Selection;
  */
 public class SelectionStateImpl implements SelectionState {
 
-	private final int beginIndex;
-	private final int endIndex;
+	private int beginIndex = 0;
+	private int endIndex = 0;
+	
+	public SelectionStateImpl() {}
 	
 	public SelectionStateImpl(int beginIndex, int endIndex) {
 		this.beginIndex = beginIndex;
@@ -23,6 +25,24 @@ public class SelectionStateImpl implements SelectionState {
 	@Override
 	public int getEndIndex() {
 		return endIndex;
+	}
+
+	@Override
+	public void setBeginIndex(int beginIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setEndIndex(int endIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restoreFromMemento() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

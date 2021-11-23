@@ -12,8 +12,7 @@ public class EngineImpl implements Engine {
 	
 	private StringBuilder buffer; // contains the text editor content
 	private StringBuilder clipboard; // stores a copy of a selection
-	
-	Selection selection;
+	private Selection selection;
 	
 	public EngineImpl() {
 		this.setBuffer(new StringBuilder());

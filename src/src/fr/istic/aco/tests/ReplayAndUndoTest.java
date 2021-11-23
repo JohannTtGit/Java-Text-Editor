@@ -12,10 +12,11 @@ import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
 import fr.istic.aco.Exceptions.CommandException;
 import fr.istic.aco.Exceptions.CommandHistoryException;
+import fr.istic.aco.Exceptions.SelectionStateException;
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 
-class ReplayAndUndoTesting {
+class ReplayAndUndoTest {
 
 	Engine engine;
 	Invoker invoker;
@@ -27,7 +28,7 @@ class ReplayAndUndoTesting {
     }
 	
 	@Test
-	void replaySimpleInsertion() throws CommandException, CommandHistoryException {
+	void replaySimpleInsertion() throws CommandException, CommandHistoryException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 		invoker.execute(insertCommand);
 		assertEquals("Hello world", engine.getBufferContents());
@@ -36,7 +37,7 @@ class ReplayAndUndoTesting {
 	}
 	
 	@Test
-	void replay() throws CommandException, CommandHistoryException {
+	void replay() throws CommandException, CommandHistoryException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
         
@@ -52,7 +53,7 @@ class ReplayAndUndoTesting {
 	}
 	
 	@Test
-	void replay2() throws CommandException, CommandHistoryException {
+	void replay2() throws CommandException, CommandHistoryException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
 	    Command cutSelectedTextCommand2 = new CutSelectedTextCommand(engine);
@@ -74,7 +75,7 @@ class ReplayAndUndoTesting {
 	}
 	
 	@Test
-	void undo() throws CommandHistoryException, CommandException {
+	void undo() throws CommandHistoryException, CommandException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
         
@@ -101,7 +102,7 @@ class ReplayAndUndoTesting {
 	}
 	
 	@Test
-	void commandHistoryAndCareTakerHaveDifferenteSizes() throws CommandHistoryException, CommandException {
+	void commandHistoryAndCareTakerHaveDifferenteSizes() throws CommandHistoryException, CommandException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
 	    

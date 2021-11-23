@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.istic.aco.Exceptions.CommandException;
 import fr.istic.aco.Exceptions.CommandHistoryException;
+import fr.istic.aco.Exceptions.SelectionStateException;
 import fr.istic.aco.Selection.SelectionState;
 import fr.istic.aco.Selection.SelectionStateImpl;
 import fr.istic.aco.Selection.SelectionStates;
@@ -26,7 +27,7 @@ public class InvokerImpl implements Invoker {
 	}
 	
 	@Override
-	public void execute(Command command) throws CommandException {
+	public void execute(Command command) throws CommandException, SelectionStateException {
 		
 		if(command == null) {
 			throw new CommandException("You cannot execute a null command");
@@ -38,7 +39,7 @@ public class InvokerImpl implements Invoker {
 	}
 	
 	@Override
-	public void replay() throws CommandHistoryException {
+	public void replay() throws CommandHistoryException, SelectionStateException {
 		
 		if(command_history.size() != states.getSize()) {
 			throw new CommandHistoryException("Size of states and command history are not equal. Ensure the commands are executed through the invoker only");
@@ -56,7 +57,7 @@ public class InvokerImpl implements Invoker {
 	}
 	
 	@Override
-	public void undo() throws CommandHistoryException {
+	public void undo() throws CommandHistoryException, SelectionStateException {
 		
 		if(command_history.size() < 1) {
 			throw new CommandHistoryException("No command history. You cannot undo any command");

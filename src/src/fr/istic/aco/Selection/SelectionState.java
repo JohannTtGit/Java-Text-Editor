@@ -16,4 +16,9 @@ public interface SelectionState {
 	 * @return the end index of the saved selection state
 	 */
 	int getEndIndex();
+	
+	public void setBeginIndex(int beginIndex);
+	public void setEndIndex(int endIndex);
+	public void restoreFromMemento();//Add Memento type attribute
+	
 }

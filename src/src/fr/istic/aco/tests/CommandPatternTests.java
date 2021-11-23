@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.istic.aco.Commands.*;
 import fr.istic.aco.Exceptions.CommandException;
+import fr.istic.aco.Exceptions.SelectionStateException;
 import fr.istic.aco.editor.*;
 
 class CommandPatternTests {
@@ -21,14 +22,14 @@ class CommandPatternTests {
     }
 	
 	@Test
-	void insertCommand() throws CommandException {
+	void insertCommand() throws CommandException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 		invoker.execute(insertCommand);
 		assertEquals("Hello world", engine.getBufferContents());
 	}
 	
 	@Test
-	void CopySelectedTextCommand() throws CommandException {
+	void CopySelectedTextCommand() throws CommandException, SelectionStateException {
 		Command copySelectedTextCommand = new CopySelectedTextCommand(engine);
         Command insertCommand = new InsertCommand(engine, "Hello world");
 		invoker.execute(insertCommand);
@@ -41,7 +42,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void CutSelectedTextCommand() throws CommandException {
+	void CutSelectedTextCommand() throws CommandException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 		invoker.execute(insertCommand);
 		
@@ -54,7 +55,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void deleteCommand() throws CommandException {
+	void deleteCommand() throws CommandException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 		invoker.execute(insertCommand);
 		
@@ -67,7 +68,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void pasteClipboardCommand() throws CommandException {
+	void pasteClipboardCommand() throws CommandException, SelectionStateException {
 		Command insertCommand = new InsertCommand(engine, "Hello world");
 		invoker.execute(insertCommand);
 		
