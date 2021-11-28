@@ -18,7 +18,7 @@ class CommandPatternTests {
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
-        invoker = new InvokerImpl(engine);
+        invoker = new InvokerImpl();
     }
 	
 	@Test

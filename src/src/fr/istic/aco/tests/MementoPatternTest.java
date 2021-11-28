@@ -23,7 +23,7 @@ public class MementoPatternTest {
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
-        invoker = new InvokerImpl(engine);
+        invoker = new InvokerImpl();
         caretaker = new SelectionStatesImpl();
         originator = new SelectionStateImpl();
     }

@@ -10,27 +10,16 @@ public interface Invoker {
 	 * executes a given command
 	 * @param command the command to be executed (non-null)
 	 * @throws CommandException 
-	 * @throws SelectionStateException 
 	 */
-	void play(Command command) throws CommandException, SelectionStateException;
-	
-	/**
-	 * replays all the executed commands (in order from first to last executed)
-	 * precondition: for every saved command there is a corresponding saved selection state
-	 * @throws CommandHistoryException 
-	 * @throws SelectionStateException 
-	 */
-	void replay() throws CommandHistoryException, SelectionStateException;
-	
-	/**
-	 * removes the last executed command
-	 * precondition: history must at least contain 1 element (i.e. command)
-	 * @throws CommandHistoryException 
-	 * @throws SelectionStateException 
-	 */
-	void undo() throws CommandHistoryException, SelectionStateException;
+	void play(Command command) throws CommandException;
+
 	
 	//Method to handle the function's argument in the context of the Command design pattern
 	String getContentToInsert();
 	void setContentToInsert(String content);
+	
+	int getBeginIndex();
+	int getEndIndex();
+	void setBeginIndex(int beginIndex);
+	void setEndIndex(int endIndex);
 }

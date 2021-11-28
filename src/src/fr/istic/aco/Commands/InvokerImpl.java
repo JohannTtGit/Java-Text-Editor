@@ -13,61 +13,28 @@ import fr.istic.aco.Selection.SelectionStatesImpl;
 import fr.istic.aco.editor.Engine;
 
 /**
- * @author Niklas, Johann
- * Implements the invoker who servers a singelton to execute commands (command design pattern), ensure book keeping (command design pattern) and saves states as originator (cf memento pattern) 
+ * @author Niklas, Johann 
  */
 public class InvokerImpl implements Invoker {
 	private List<Command> command_history = new ArrayList<Command>();
-	private Engine engine;
-	private SelectionStates states = new SelectionStatesImpl();
-	private String contentToInsert; //Use for insertion in the context of Command design pattern
 	
+	//Attributes used to ensure the Command design pattern
+	private String contentToInsert; //Used for insertion in the context of Command design pattern
+	private int beginIndex; //Used for setBeginIndexCommand
+	private int endIndex; //Used for setEndIndexCommand
 	
-	public InvokerImpl(Engine engine) {
-		this.engine = engine;
-	}
 	
 	@Override
-	public void play(Command command) throws CommandException, SelectionStateException {
+	public void play(Command command) throws CommandException {
 		
 		if(command == null) {
 			throw new CommandException("You cannot execute a null command");
 		}
 
 		this.command_history.add(command);
-		states.add(new SelectionStateImpl(engine.getSelection().getBeginIndex(), engine.getSelection().getEndIndex()));
 		command.execute();
 	}
 	
-	@Override
-	public void replay() throws CommandHistoryException, SelectionStateException {
-		
-		if(command_history.size() != states.getSize()) {
-			throw new CommandHistoryException("Size of states and command history are not equal. Ensure the commands are executed through the invoker only");
-		}
-		
-		engine.clearBuffer();
-		
-		for(int i = 0; i < command_history.size(); i++) {
-			//restore selection state from the memento to execute command with correct selection
-			SelectionState state = states.getState(i);
-			engine.getSelection().setEndIndex(state.getEndIndex());
-			engine.getSelection().setBeginIndex(state.getBeginIndex());
-			command_history.get(i).execute();
-		}
-	}
-	
-	@Override
-	public void undo() throws CommandHistoryException, SelectionStateException {
-		
-		if(command_history.size() < 1) {
-			throw new CommandHistoryException("No command history. You cannot undo any command");
-		}
-		
-		command_history.remove(command_history.size() - 1);
-		states.removeLast();
-		replay();
-	}
 	
 	@Override
 	public String getContentToInsert() {
@@ -77,6 +44,26 @@ public class InvokerImpl implements Invoker {
 	@Override
 	public void setContentToInsert(String content) {
 		this.contentToInsert = content;
+	}
+
+	@Override
+	public int getBeginIndex() {
+		return this.beginIndex;
+	}
+
+	@Override
+	public int getEndIndex() {
+		return this.endIndex;
+	}
+
+	@Override
+	public void setBeginIndex(int beginIndex) {
+		this.beginIndex = beginIndex;
+	}
+
+	@Override
+	public void setEndIndex(int endIndex) {
+		this.endIndex = endIndex;	
 	}
 
 }
