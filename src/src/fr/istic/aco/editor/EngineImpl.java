@@ -11,7 +11,7 @@ import fr.istic.aco.Selection.SelectionImpl;
 public class EngineImpl implements Engine {
 	
 	private StringBuilder buffer; // contains the text editor content
-	private StringBuilder clipboard; // stores a copy of a selection
+	private StringBuilder clipboard; // stores a copy (Ctrl + C) of a selection
 	private Selection selection;
 	
 	public EngineImpl() {

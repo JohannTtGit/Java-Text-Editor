@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import fr.istic.aco.Commands.*;
 import fr.istic.aco.Exceptions.CommandException;
-import fr.istic.aco.Exceptions.SelectionStateException;
 import fr.istic.aco.editor.*;
 
 class CommandPatternTests {
@@ -22,7 +21,7 @@ class CommandPatternTests {
     }
 	
 	@Test
-	void insertCommand() throws CommandException, SelectionStateException {
+	void insertCommand() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker);
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
@@ -30,7 +29,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void setBeginAndEndIndex() throws CommandException, SelectionStateException {
+	void setBeginAndEndIndex() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker);
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
@@ -46,7 +45,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void CopySelectedTextCommand() throws CommandException, SelectionStateException {
+	void CopySelectedTextCommand() throws CommandException {
 		Command copySelectedTextCommand = new CopySelectedTextCommand(engine);
         Command insertCommand = new InsertCommand(engine, invoker);
         invoker.setContentToInsert("Hello world");
@@ -63,7 +62,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void CutSelectedTextCommand() throws CommandException, SelectionStateException {
+	void CutSelectedTextCommand() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker);
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
@@ -80,7 +79,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void deleteCommand() throws CommandException, SelectionStateException {
+	void deleteCommand() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker);
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
@@ -97,7 +96,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void pasteClipboardCommand() throws CommandException, SelectionStateException {
+	void pasteClipboardCommand() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker);
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);

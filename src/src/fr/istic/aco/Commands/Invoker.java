@@ -1,8 +1,6 @@
 package fr.istic.aco.Commands;
 
 import fr.istic.aco.Exceptions.CommandException;
-import fr.istic.aco.Exceptions.CommandHistoryException;
-import fr.istic.aco.Exceptions.SelectionStateException;
 
 public interface Invoker {
 	

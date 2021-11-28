@@ -5,11 +5,6 @@ import java.util.List;
 
 import fr.istic.aco.Exceptions.CommandException;
 import fr.istic.aco.Exceptions.CommandHistoryException;
-import fr.istic.aco.Exceptions.SelectionStateException;
-import fr.istic.aco.Selection.SelectionState;
-import fr.istic.aco.Selection.SelectionStateImpl;
-import fr.istic.aco.Selection.SelectionStates;
-import fr.istic.aco.Selection.SelectionStatesImpl;
 import fr.istic.aco.editor.Engine;
 
 /**
