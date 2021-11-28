@@ -118,7 +118,7 @@ class CommandPatternTests {
 	}
 	
 	
-	
+	//Check if project opened within the right branch
 	
 
 }
