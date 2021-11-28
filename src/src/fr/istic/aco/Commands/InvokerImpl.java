@@ -1,16 +1,17 @@
 package fr.istic.aco.Commands;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fr.istic.aco.Exceptions.CommandException;
-import fr.istic.aco.Exceptions.CommandHistoryException;
-import fr.istic.aco.editor.Engine;
 
 /**
  * @author Niklas, Johann 
  */
 public class InvokerImpl implements Invoker {
+	private Map<String, Command> commands = new HashMap<String, Command>();
 	private List<Command> command_history = new ArrayList<Command>();
 	
 	//Attributes used to ensure the Command design pattern
@@ -20,13 +21,19 @@ public class InvokerImpl implements Invoker {
 	
 	
 	@Override
-	public void play(Command command) throws CommandException {
+	public void addCommandToInvoker(String commandName, Command command) {
+		this.commands.put(commandName, command);
+	}
+	
+	@Override
+	public void play(String nameCommand) throws CommandException {
 		
-		if(command == null) {
-			throw new CommandException("You cannot execute a null command");
+		if(commands.get(nameCommand) == null) {
+			throw new CommandException("Unknown Command");
 		}
-
-		this.command_history.add(command);
+		
+		Command command = commands.get(nameCommand);
+		command_history.add(command);
 		command.execute();
 	}
 	
