@@ -10,16 +10,16 @@ import fr.istic.aco.editor.Engine;
 public class InsertCommand implements Command {
 
 	private Engine engine;
-	private final String toInsert;
+	private Invoker invoker;
 	
-	public InsertCommand(Engine textEngine, String toInsert) {
+	public InsertCommand(Engine textEngine, Invoker invoker) {
 		this.engine = textEngine;
-		this.toInsert = toInsert;
+		this.invoker = invoker;
 	}
 	
 	@Override
 	public void execute() {
-		this.engine.insert(toInsert);
+		this.engine.insert(invoker.getContentToInsert());
 	}
 
 }

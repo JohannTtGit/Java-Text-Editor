@@ -29,4 +29,8 @@ public interface Invoker {
 	 * @throws SelectionStateException 
 	 */
 	void undo() throws CommandHistoryException, SelectionStateException;
+	
+	//Method to handle the function's argument in the context of the Command design pattern
+	String getContentToInsert();
+	void setContentToInsert(String content);
 }

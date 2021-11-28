@@ -29,7 +29,8 @@ class ReplayAndUndoTest {
 	
 	@Test
 	void replaySimpleInsertion() throws CommandException, CommandHistoryException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		assertEquals("Hello world", engine.getBufferContents());
 		invoker.replay();
@@ -38,7 +39,8 @@ class ReplayAndUndoTest {
 	
 	@Test
 	void replay() throws CommandException, CommandHistoryException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
         
         invoker.play(insertCommand);
@@ -54,7 +56,8 @@ class ReplayAndUndoTest {
 	
 	@Test
 	void replay2() throws CommandException, CommandHistoryException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
 	    Command cutSelectedTextCommand2 = new CutSelectedTextCommand(engine);
         
@@ -76,7 +79,8 @@ class ReplayAndUndoTest {
 	
 	@Test
 	void undo() throws CommandHistoryException, CommandException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
         
         invoker.play(insertCommand);
@@ -103,7 +107,8 @@ class ReplayAndUndoTest {
 	
 	@Test
 	void commandHistoryAndCareTakerHaveDifferenteSizes() throws CommandHistoryException, CommandException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 	    Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
 	    
 	    invoker.play(insertCommand);
@@ -116,7 +121,8 @@ class ReplayAndUndoTest {
 	
 	@Test
 	void undo_withEmptyCommandHistory_throwsException() throws CommandHistoryException{
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 		
 		assertThrows(CommandHistoryException.class, ()->{
 			invoker.undo();

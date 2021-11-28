@@ -23,14 +23,16 @@ class CommandPatternTests {
 	
 	@Test
 	void insertCommand() throws CommandException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		assertEquals("Hello world", engine.getBufferContents());
 	}
 	
 	@Test
 	void setBeginAndEndIndex() throws CommandException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
 		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
@@ -46,7 +48,8 @@ class CommandPatternTests {
 	@Test
 	void CopySelectedTextCommand() throws CommandException, SelectionStateException {
 		Command copySelectedTextCommand = new CopySelectedTextCommand(engine);
-        Command insertCommand = new InsertCommand(engine, "Hello world");
+        Command insertCommand = new InsertCommand(engine, invoker);
+        invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
 		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
@@ -61,7 +64,8 @@ class CommandPatternTests {
 	
 	@Test
 	void CutSelectedTextCommand() throws CommandException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
 		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
@@ -77,7 +81,8 @@ class CommandPatternTests {
 	
 	@Test
 	void deleteCommand() throws CommandException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
 		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
@@ -93,7 +98,8 @@ class CommandPatternTests {
 	
 	@Test
 	void pasteClipboardCommand() throws CommandException, SelectionStateException {
-		Command insertCommand = new InsertCommand(engine, "Hello world");
+		Command insertCommand = new InsertCommand(engine, invoker);
+		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
 		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
@@ -117,8 +123,6 @@ class CommandPatternTests {
 		assertEquals("lo world", engine.getBufferContents());
 	}
 	
-	
-	//Check if project opened within the right branch
 	
 
 }

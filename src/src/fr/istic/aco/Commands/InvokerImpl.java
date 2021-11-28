@@ -20,6 +20,7 @@ public class InvokerImpl implements Invoker {
 	private List<Command> command_history = new ArrayList<Command>();
 	private Engine engine;
 	private SelectionStates states = new SelectionStatesImpl();
+	private String contentToInsert; //Use for insertion in the context of Command design pattern
 	
 	
 	public InvokerImpl(Engine engine) {
@@ -66,6 +67,16 @@ public class InvokerImpl implements Invoker {
 		command_history.remove(command_history.size() - 1);
 		states.removeLast();
 		replay();
+	}
+	
+	@Override
+	public String getContentToInsert() {
+		return this.contentToInsert;
+	}
+	
+	@Override
+	public void setContentToInsert(String content) {
+		this.contentToInsert = content;
 	}
 
 }
