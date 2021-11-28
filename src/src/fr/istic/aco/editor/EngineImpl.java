@@ -20,13 +20,6 @@ public class EngineImpl implements Engine {
 		setSelection(new SelectionImpl(this.buffer));
 	}
 	
-	/**
-	 * sets the clipboard content
-	 * @param clipboard the content to be saved in the clipboard
-	 */
-    private void setClipboard(StringBuilder clipboard) {
-		this.clipboard = clipboard;
-	}
 
     @Override
     public Selection getSelection() {
@@ -82,11 +75,25 @@ public class EngineImpl implements Engine {
     	this.setBuffer(this.getBuffer().delete(start, end));
     }
     
+    @Override
+	public void clearBuffer() {
+		this.buffer = new StringBuilder();
+	}
+    
+    
+    /**
+	 * sets the clipboard content
+	 * @param clipboard the content to be saved in the clipboard
+	 */
+    public void setClipboard(StringBuilder clipboard) {
+		this.clipboard = clipboard;
+	}
+    
     /**
      * 
      * @return the attribute buffer
      */
-    private StringBuilder getBuffer() {
+    public StringBuilder getBuffer() {
 		return buffer;
 	}
     
@@ -94,7 +101,7 @@ public class EngineImpl implements Engine {
      * Update the attribute buffer
      * @param buffer the contents to be saved in the buffer
      */
-	private void setBuffer(StringBuilder buffer) {
+	public void setBuffer(StringBuilder buffer) {
 		this.buffer = buffer;
 	}
 	
@@ -102,13 +109,10 @@ public class EngineImpl implements Engine {
 	 * 
 	 * @param selection the selection to be set
 	 */
-	private void setSelection(Selection selection) {
+	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
 
-	@Override
-	public void clearBuffer() {
-		this.buffer = new StringBuilder();
-	}
+	
 	
 }
