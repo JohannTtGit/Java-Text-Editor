@@ -1,19 +1,19 @@
 package fr.istic.aco.Commands;
 
-import fr.istic.aco.Selection.Selection;
+import fr.istic.aco.editor.Engine;
 
 public class setBeginIndexCommand implements Command {
 	
-	Selection selection;
+	Engine engine;
 	int beginIndex;
 	
-	public setBeginIndexCommand(Selection selection, int beginIndex) {
-		this.selection = selection;
+	public setBeginIndexCommand(Engine engine, int beginIndex) {
+		this.engine = engine;
 		this.beginIndex = beginIndex;
 	}
 
 	@Override
 	public void execute() {
-		selection.setBeginIndex(beginIndex);
+		engine.getSelection().setBeginIndex(beginIndex);
 	}
 }

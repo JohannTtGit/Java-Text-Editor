@@ -1,19 +1,19 @@
 package fr.istic.aco.Commands;
 
-import fr.istic.aco.Selection.Selection;
+import fr.istic.aco.editor.Engine;
 
 public class setEndIndexCommand implements Command {
 	
-	Selection selection;
+	Engine engine;
 	int endIndex;
 	
-	public setEndIndexCommand(Selection selection, int endIndex) {
-		this.selection = selection;
+	public setEndIndexCommand(Engine engine, int endIndex) {
+		this.engine = engine;
 		this.endIndex = endIndex;
 	}
 
 	@Override
 	public void execute() {
-		selection.setEndIndex(endIndex);
+		engine.getSelection().setEndIndex(endIndex);
 	}
 }

@@ -34,8 +34,8 @@ class CommandPatternTests {
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
-		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
-		Command setEndIndex = new setEndIndexCommand(engine.getSelection(), 3);
+		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
+		Command setEndIndex = new setEndIndexCommand(engine, 3);
 		
 		invoker.play(setEndIndex);
 		invoker.play(setBeginIndex);
@@ -51,8 +51,8 @@ class CommandPatternTests {
         invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
-		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
-		Command setEndIndex = new setEndIndexCommand(engine.getSelection(), 1);
+		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
+		Command setEndIndex = new setEndIndexCommand(engine, 1);
 		
 		invoker.play(setEndIndex);
 		invoker.play(setBeginIndex);
@@ -67,8 +67,8 @@ class CommandPatternTests {
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
-		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
-		Command setEndIndex = new setEndIndexCommand(engine.getSelection(), 1);
+		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
+		Command setEndIndex = new setEndIndexCommand(engine, 1);
 		
 		invoker.play(setEndIndex);
 		invoker.play(setBeginIndex);
@@ -84,8 +84,8 @@ class CommandPatternTests {
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
-		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
-		Command setEndIndex = new setEndIndexCommand(engine.getSelection(), 3);
+		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
+		Command setEndIndex = new setEndIndexCommand(engine, 3);
 		
 		invoker.play(setEndIndex);
 		invoker.play(setBeginIndex);
@@ -101,8 +101,8 @@ class CommandPatternTests {
 		invoker.setContentToInsert("Hello world");
 		invoker.play(insertCommand);
 		
-		Command setBeginIndex = new setBeginIndexCommand(engine.getSelection(), 0);
-		Command setEndIndex = new setEndIndexCommand(engine.getSelection(), 3);
+		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
+		Command setEndIndex = new setEndIndexCommand(engine, 3);
 		
 		invoker.play(setEndIndex);
 		invoker.play(setBeginIndex);
