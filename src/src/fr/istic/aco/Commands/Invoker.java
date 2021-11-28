@@ -12,7 +12,7 @@ public interface Invoker {
 	 * @throws CommandException 
 	 * @throws SelectionStateException 
 	 */
-	void execute(Command command) throws CommandException, SelectionStateException;
+	void play(Command command) throws CommandException, SelectionStateException;
 	
 	/**
 	 * replays all the executed commands (in order from first to last executed)

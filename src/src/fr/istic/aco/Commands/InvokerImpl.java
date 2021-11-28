@@ -27,7 +27,7 @@ public class InvokerImpl implements Invoker {
 	}
 	
 	@Override
-	public void execute(Command command) throws CommandException, SelectionStateException {
+	public void play(Command command) throws CommandException, SelectionStateException {
 		
 		if(command == null) {
 			throw new CommandException("You cannot execute a null command");
