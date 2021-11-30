@@ -7,22 +7,25 @@ import org.junit.jupiter.api.Test;
 
 import fr.istic.aco.Commands.*;
 import fr.istic.aco.Exceptions.CommandException;
+import fr.istic.aco.Memento.CareTaker;
 import fr.istic.aco.editor.*;
 
 class CommandPatternTests {
 	
 	Engine engine;
 	Invoker invoker;
+	CareTaker caretaker;
 
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
+        caretaker = new CareTaker();
     }
 	
 	@Test
 	void insertCommand() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker);
+		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
@@ -33,7 +36,7 @@ class CommandPatternTests {
 	
 	@Test
 	void setBeginAndEndIndex() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker);
+		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
@@ -54,7 +57,7 @@ class CommandPatternTests {
 	@Test
 	void CopySelectedTextCommand() throws CommandException {
 		Command copySelectedTextCommand = new CopySelectedTextCommand(engine);
-        Command insertCommand = new InsertCommand(engine, invoker);
+        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
         invoker.addCommandToInvoker("insertCommand", insertCommand);
         invoker.addCommandToInvoker("insertCommand", insertCommand);
         invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
@@ -76,7 +79,7 @@ class CommandPatternTests {
 	
 	@Test
 	void CutSelectedTextCommand() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker);
+		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
@@ -100,7 +103,7 @@ class CommandPatternTests {
 	
 	@Test
 	void deleteCommand() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker);
+		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
@@ -125,7 +128,7 @@ class CommandPatternTests {
 	
 	@Test
 	void pasteClipboardCommand() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker);
+		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		

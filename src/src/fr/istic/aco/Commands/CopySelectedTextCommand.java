@@ -18,7 +18,18 @@ public class CopySelectedTextCommand implements Command {
 	public void execute() {
 		engine.copySelectedText();
 	}
-	
+
+	@Override
+	public Engine getEngine() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Invoker getInvoker() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }
