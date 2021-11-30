@@ -7,7 +7,7 @@ import fr.istic.aco.editor.Engine;
  * @author Niklas, Johann
  *
  */
-public class DeleteCommand implements Command {
+public class DeleteCommand implements CommandGlobal {
 
 	private Engine engine;
 	

@@ -2,7 +2,7 @@ package fr.istic.aco.Commands;
 
 import fr.istic.aco.editor.Engine;
 
-public class setEndIndexCommand implements Command {
+public class setEndIndexCommand implements CommandGlobal {
 	
 	Engine engine;
 	int endIndex;

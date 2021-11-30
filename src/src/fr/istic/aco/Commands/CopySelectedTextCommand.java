@@ -6,7 +6,7 @@ import fr.istic.aco.editor.Engine;
  * @author Niklas, Johann
  *
  */
-public class CopySelectedTextCommand implements Command {
+public class CopySelectedTextCommand implements CommandGlobal {
 	
 	private Engine engine;
 	

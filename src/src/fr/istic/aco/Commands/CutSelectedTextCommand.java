@@ -7,7 +7,7 @@ import fr.istic.aco.editor.Engine;
  * @author Niklas, Johann
  *
  */
-public class CutSelectedTextCommand implements Command {
+public class CutSelectedTextCommand implements CommandGlobal {
 
 	private Engine engine;
 	

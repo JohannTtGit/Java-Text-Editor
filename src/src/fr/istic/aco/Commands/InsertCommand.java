@@ -9,7 +9,7 @@ import fr.istic.aco.editor.Engine;
  * @author Niklas, Johann
  *
  */
-public class InsertCommand implements Command{
+public class InsertCommand implements CommandGlobal{
 
 	private Engine engine;
 	private Invoker invoker;

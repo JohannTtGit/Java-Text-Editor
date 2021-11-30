@@ -7,7 +7,7 @@ import fr.istic.aco.editor.Engine;
  * @author Niklas, Johann
  *
  */
-public class PasteClipboardCommand implements Command {
+public class PasteClipboardCommand implements CommandGlobal {
 
 	Engine engine;
 	
