@@ -1,7 +1,7 @@
 package fr.istic.aco.Memento;
 
 
-public class MementoInsert {
+public class MementoInsert implements Memento {
 	
 	private String savedContentToInsert;
 	

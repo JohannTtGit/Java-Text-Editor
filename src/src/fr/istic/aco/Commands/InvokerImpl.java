@@ -37,16 +37,6 @@ public class InvokerImpl implements Invoker {
 		command.execute();
 	}
 	
-	@Override
-	public void replay() {
-		CommandGlobal command = null;
-		for(int i=0; i < this.command_history.size(); i++) {
-			//command = (CommandGlobal) this.command_history.get(i);
-			//command
-			//command.execute();
-		}
-	}
-	
 	
 	@Override
 	public String getContentToInsert() {

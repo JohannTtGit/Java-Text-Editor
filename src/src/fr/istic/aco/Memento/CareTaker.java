@@ -7,6 +7,6 @@ public interface CareTaker {
 	public void start();
 	public void stop();
 	public void replay();
-	public MementoInsert getMemento(int index);
+	public Memento getMemento(int index);
 	
 }

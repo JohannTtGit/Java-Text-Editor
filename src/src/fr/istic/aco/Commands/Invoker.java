@@ -12,12 +12,6 @@ public interface Invoker {
 	 * @throws CommandException
 	 */
 	void play(String commandName) throws CommandException;
-	
-	/**
-	 * 
-	 * @return
-	 */
-	void replay();
 
 	
 	//Method to handle the function's argument in the context of the Command design pattern

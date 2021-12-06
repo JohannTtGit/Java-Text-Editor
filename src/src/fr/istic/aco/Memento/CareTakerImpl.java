@@ -8,17 +8,17 @@ import fr.istic.aco.Commands.CommandGlobal;
 public class CareTakerImpl implements CareTaker {
 	
 	private List<CommandGlobal> command_history = new ArrayList<CommandGlobal>();
-	List<MementoInsert> savedTextToInsertStates = new ArrayList<MementoInsert>();
+	List<Memento> savedStates = new ArrayList<Memento>();
 	
 	@Override
 	public void save(CommandGlobal command){
 		this.command_history.add(command);
-		this.savedTextToInsertStates.add(command.sendMementoToCareTaker());
+		this.savedStates.add(command.sendMementoToCareTaker());
 	}
 	
 	@Override
-	public MementoInsert getMemento(int index) {
-		return this.savedTextToInsertStates.get(index);
+	public Memento getMemento(int index) {
+		return this.savedStates.get(index);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class CareTakerImpl implements CareTaker {
 		
 		for(int i=0; i < list_to_iterate.size(); i++) {
 			command = command_history.get(i);
-			command.restoreFromMemento(savedTextToInsertStates.get(i));
+			command.restoreFromMemento(savedStates.get(i));
 			command.execute();
 		}
 		

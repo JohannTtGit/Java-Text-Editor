@@ -1,6 +1,7 @@
 package fr.istic.aco.Commands;
 
 import fr.istic.aco.Memento.CareTakerImpl;
+import fr.istic.aco.Memento.Memento;
 import fr.istic.aco.Memento.MementoInsert;
 import fr.istic.aco.editor.Engine;
 
@@ -28,12 +29,12 @@ public class InsertCommand implements CommandGlobal{
 	}
 	
 	@Override
-	public void restoreFromMemento(MementoInsert memento) {
+	public void restoreFromMemento(Memento memento) {
 		this.invoker.setContentToInsert(memento.getState());
 	}
 	
 	@Override
-	public MementoInsert sendMementoToCareTaker() {
+	public Memento sendMementoToCareTaker() {
 		return new MementoInsert(this.invoker.getContentToInsert());
 	}
 

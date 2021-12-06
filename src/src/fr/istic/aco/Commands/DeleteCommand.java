@@ -1,6 +1,6 @@
 package fr.istic.aco.Commands;
 
-import fr.istic.aco.Memento.MementoInsert;
+import fr.istic.aco.Memento.Memento;
 import fr.istic.aco.editor.Engine;
 
 /**
@@ -34,15 +34,15 @@ public class DeleteCommand implements CommandGlobal {
 	}
 
 	@Override
-	public MementoInsert sendMementoToCareTaker() {
+	public void restoreFromMemento(Memento memento) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
-	public void restoreFromMemento(MementoInsert memento) {
+	public Memento sendMementoToCareTaker() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	
 }
