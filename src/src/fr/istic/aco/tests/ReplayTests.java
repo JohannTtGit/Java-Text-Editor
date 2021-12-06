@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.istic.aco.Commands.Command;
 import fr.istic.aco.Commands.CommandGlobal;
+import fr.istic.aco.Commands.CopySelectedTextCommand;
 import fr.istic.aco.Commands.CutSelectedTextCommand;
 import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
@@ -88,6 +89,43 @@ class ReplayTests {
 		invoker.play("replayCommand");
 		
 		assertEquals("Helld", engine.getBufferContents());
+	}
+	
+	@Test
+	void replayInsertAndCopyPaste() throws CommandException{
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		Command copySelectedTextCommand = new CopySelectedTextCommand(engine, caretaker);
+		CommandGlobal pasteCommand = new PasteClipboardCommand(engine, caretaker);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
+		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
+		invoker.addCommandToInvoker("pasteCommand", pasteCommand);
+		
+		
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(3);
+		
+		
+		caretaker.start();
+		
+		invoker.play("insertCommand");
+		invoker.play("setEndIndex");
+		invoker.play("setBeginIndex");
+		invoker.play("copySelectedTextCommand");
+		invoker.play("pasteCommand");
+		
+		caretaker.stop();
+		
+		Command replayCommand = new ReplayCommand(caretaker);
+		invoker.addCommandToInvoker("replayCommand", replayCommand);
+		
+		invoker.play("replayCommand");
+		
+		assertEquals("Hello worldlo world", engine.getBufferContents());
 	}
 	
 	@Test

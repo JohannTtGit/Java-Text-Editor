@@ -126,7 +126,7 @@ class CommandPatternTests {
 	}
 	
 	@Test
-	void pasteClipboardCommand() throws CommandException {
+	void cutAndPast() throws CommandException {
 		Command pasteCommand = new PasteClipboardCommand(engine, caretaker);
 		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
 		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
@@ -149,6 +149,32 @@ class CommandPatternTests {
         invoker.play("pasteCommand");
         
         assertEquals("Helworld", engine.getBufferContents());
+	}
+	
+	@Test
+	void copyAndPast() throws CommandException {
+        Command copySelectedTextCommand = new CopySelectedTextCommand(engine, caretaker);
+        Command pasteClipboardCommand = new PasteClipboardCommand(engine, caretaker);
+        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
+		invoker.addCommandToInvoker("pasteClipboardCommand", pasteClipboardCommand);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
+		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+        
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(1);
+		
+		invoker.play("insertCommand");
+		invoker.play("setEndIndex");
+		invoker.play("setBeginIndex");
+		invoker.play("copySelectedTextCommand");
+		invoker.play("pasteClipboardCommand");
+		
+		assertEquals("Hello world", engine.getBufferContents());
 	}
 	
 	
