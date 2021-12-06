@@ -21,19 +21,16 @@ public class PasteClipboardCommand implements CommandGlobal {
 	@Override
 	public void execute() {
 		engine.pasteClipboard();
+		caretaker.save(this);
 	}
 	
 	
 	@Override
 	public Memento sendMementoToCareTaker() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public void restoreFromMemento(Memento memento) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void restoreFromMemento(Memento memento) {}
 	
 
 }

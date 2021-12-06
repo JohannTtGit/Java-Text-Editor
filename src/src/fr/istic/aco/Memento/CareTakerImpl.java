@@ -2,7 +2,6 @@ package fr.istic.aco.Memento;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import fr.istic.aco.Commands.CommandGlobal;
 
 public class CareTakerImpl implements CareTaker {

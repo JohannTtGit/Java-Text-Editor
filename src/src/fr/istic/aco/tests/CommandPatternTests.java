@@ -37,8 +37,8 @@ class CommandPatternTests {
 	@Test
 	void setBeginAndEndIndex() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
@@ -59,8 +59,8 @@ class CommandPatternTests {
 	void CopySelectedTextCommand() throws CommandException {
         Command copySelectedTextCommand = new CopySelectedTextCommand(engine, caretaker);
         Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -80,10 +80,10 @@ class CommandPatternTests {
 	
 	@Test
 	void CutSelectedTextCommand() throws CommandException {
-		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, caretaker);
         Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("cutSelectedTextCommand", cutSelectedTextCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -106,8 +106,8 @@ class CommandPatternTests {
 		
 		Command deleteCommand = new DeleteCommand(engine);
         Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
 		invoker.addCommandToInvoker("deleteCommand", deleteCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -129,9 +129,9 @@ class CommandPatternTests {
 	void pasteClipboardCommand() throws CommandException {
 		Command pasteCommand = new PasteClipboardCommand(engine, caretaker);
 		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker);
-		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, caretaker);
 		invoker.addCommandToInvoker("pasteCommand", pasteCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);

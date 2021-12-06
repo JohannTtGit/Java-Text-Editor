@@ -6,8 +6,13 @@ package fr.istic.aco.Memento;
 public interface Memento {
 
 	/*
-	 * @return : Attributes of the current Memento
+	 * @return : Textual state of a Memento
 	 */
 	String getState();
+	
+	/*
+	 * @return : Numerical state of a Memento
+	 */
+	int getIntState();
 
 }

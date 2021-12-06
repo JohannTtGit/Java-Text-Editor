@@ -1,6 +1,5 @@
 package fr.istic.aco.Memento;
 
-
 /*
  * This interface is extended by CommandGlobal, and is never implemented.
  * All concrete commands are both Originator and Command.

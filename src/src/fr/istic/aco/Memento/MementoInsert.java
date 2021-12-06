@@ -17,5 +17,10 @@ public class MementoInsert implements Memento {
 	public String getState() {
 		return this.savedContentToInsert;
 	}
+
+	@Override
+	public int getIntState() {
+		return 0;
+	}
 	
 }
