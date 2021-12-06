@@ -38,14 +38,4 @@ public class InsertCommand implements CommandGlobal{
 		return new MementoInsert(this.invoker.getContentToInsert());
 	}
 
-	@Override
-	public Engine getEngine() {
-		return this.engine;
-	}
-
-	@Override
-	public Invoker getInvoker() {
-		return this.invoker;
-	}
-
 }

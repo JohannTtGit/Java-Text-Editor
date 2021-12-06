@@ -21,17 +21,6 @@ public class CutSelectedTextCommand implements CommandGlobal {
 		engine.cutSelectedText();
 	}
 
-	@Override
-	public Engine getEngine() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Invoker getInvoker() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Memento sendMementoToCareTaker() {

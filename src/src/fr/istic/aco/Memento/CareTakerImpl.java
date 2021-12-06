@@ -38,7 +38,7 @@ public class CareTakerImpl implements CareTaker {
 		
 		CommandGlobal command = null;
 		
-		//Faire une copie avant car execute ajoute aussi la commande a l'historique donc créer une boucle infinie
+		//Copy before looping, because execute() add the restored command to the history -> Infinite loop
 		List<CommandGlobal> list_to_iterate = new ArrayList<>(command_history);
 		
 		for(int i=0; i < list_to_iterate.size(); i++) {

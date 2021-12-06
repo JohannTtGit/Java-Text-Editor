@@ -22,18 +22,6 @@ public class DeleteCommand implements CommandGlobal {
 	}
 
 	@Override
-	public Engine getEngine() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Invoker getInvoker() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void restoreFromMemento(Memento memento) {
 		// TODO Auto-generated method stub
 		
