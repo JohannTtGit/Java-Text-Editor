@@ -35,13 +35,15 @@ class ReplayTests {
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
+		caretaker.start();
 		invoker.play("insertCommand");
+		caretaker.stop();
 		
 		Command replayCommand = new ReplayCommand(caretaker);
 		invoker.addCommandToInvoker("replayCommand", replayCommand);
 		invoker.play("replayCommand");
 		
-		assertEquals(engine.getBufferContents(), "Hello worldHello world");
+		assertEquals("Hello worldHello world", engine.getBufferContents());
 	}
 
 }

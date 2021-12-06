@@ -7,7 +7,7 @@ package fr.istic.aco.Commands;
  */
 public interface Command {
 	/**
-	 * executes a command on the receiver
+	 * Executes a command on the receiver
 	 */
 	public void execute();
 }

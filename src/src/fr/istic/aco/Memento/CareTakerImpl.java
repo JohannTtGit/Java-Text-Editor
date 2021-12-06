@@ -9,11 +9,14 @@ public class CareTakerImpl implements CareTaker {
 	
 	private List<CommandGlobal> command_history = new ArrayList<CommandGlobal>();
 	List<Memento> savedStates = new ArrayList<Memento>();
+	private boolean record = false;
 	
 	@Override
 	public void save(CommandGlobal command){
-		this.command_history.add(command);
-		this.savedStates.add(command.sendMementoToCareTaker());
+		if(record) {
+			this.command_history.add(command);
+			this.savedStates.add(command.sendMementoToCareTaker());
+		}
 	}
 	
 	@Override
@@ -23,14 +26,12 @@ public class CareTakerImpl implements CareTaker {
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
-		
+		this.record = true;
 	}
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-		
+		this.record = false;
 	}
 
 	@Override
