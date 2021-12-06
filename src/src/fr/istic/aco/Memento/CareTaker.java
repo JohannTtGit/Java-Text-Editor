@@ -1,17 +1,12 @@
 package fr.istic.aco.Memento;
 
-import java.util.ArrayList;
-import java.util.List;
+import fr.istic.aco.Commands.CommandGlobal;
 
-public class CareTaker {
+public interface CareTaker {
+	public void save(CommandGlobal command);
+	public void start();
+	public void stop();
+	public void replay();
+	public MementoInsert getMemento(int index);
 	
-	List<Memento> savedStates = new ArrayList<Memento>();
-	
-	public void addMemento(Memento memento) {
-		savedStates.add(memento);
-	}
-	
-	public Memento getMemento(int index) {
-		return this.savedStates.get(index);
-	}
 }

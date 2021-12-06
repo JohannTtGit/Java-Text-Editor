@@ -7,20 +7,20 @@ import org.junit.jupiter.api.Test;
 
 import fr.istic.aco.Commands.*;
 import fr.istic.aco.Exceptions.CommandException;
-import fr.istic.aco.Memento.CareTaker;
+import fr.istic.aco.Memento.CareTakerImpl;
 import fr.istic.aco.editor.*;
 
 class CommandPatternTests {
 	
 	Engine engine;
 	Invoker invoker;
-	CareTaker caretaker;
+	CareTakerImpl caretaker;
 
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
-        caretaker = new CareTaker();
+        caretaker = new CareTakerImpl();
     }
 	
 	@Test

@@ -1,7 +1,7 @@
 package fr.istic.aco.Commands;
 
-import fr.istic.aco.Memento.CareTaker;
-import fr.istic.aco.Memento.Memento;
+import fr.istic.aco.Memento.CareTakerImpl;
+import fr.istic.aco.Memento.MementoInsert;
 import fr.istic.aco.editor.Engine;
 
 /**
@@ -13,9 +13,9 @@ public class InsertCommand implements CommandGlobal{
 
 	private Engine engine;
 	private Invoker invoker;
-	private CareTaker caretaker; //Needed as part of the Memento design pattern
+	private CareTakerImpl caretaker; //Needed as part of the Memento design pattern
 	
-	public InsertCommand(Engine textEngine, Invoker invoker, CareTaker caretaker) {
+	public InsertCommand(Engine textEngine, Invoker invoker, CareTakerImpl caretaker) {
 		this.engine = textEngine;
 		this.invoker = invoker;
 		this.caretaker = caretaker;
@@ -24,7 +24,17 @@ public class InsertCommand implements CommandGlobal{
 	@Override
 	public void execute() {
 		this.engine.insert(invoker.getContentToInsert());
-		caretaker.addMemento(new Memento(this));
+		caretaker.save(this);
+	}
+	
+	@Override
+	public void restoreFromMemento(MementoInsert memento) {
+		this.invoker.setContentToInsert(memento.getState());
+	}
+	
+	@Override
+	public MementoInsert sendMementoToCareTaker() {
+		return new MementoInsert(this.invoker.getContentToInsert());
 	}
 
 	@Override
