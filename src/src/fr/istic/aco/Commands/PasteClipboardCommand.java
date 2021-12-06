@@ -24,11 +24,11 @@ public class PasteClipboardCommand implements CommandGlobal {
 		caretaker.save(this);
 	}
 	
-	
 	@Override
 	public Memento sendMementoToCareTaker() {
 		return null;
 	}
+	
 	@Override
 	public void restoreFromMemento(Memento memento) {}
 	

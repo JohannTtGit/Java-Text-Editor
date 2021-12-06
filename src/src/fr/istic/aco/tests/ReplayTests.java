@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import fr.istic.aco.Commands.Command;
 import fr.istic.aco.Commands.CommandGlobal;
 import fr.istic.aco.Commands.CutSelectedTextCommand;
+import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
@@ -51,7 +52,7 @@ class ReplayTests {
 	}
 	
 	@Test
-	void replayInsertAndCopyPaste() throws CommandException{
+	void replayInsertAndCutPaste() throws CommandException{
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
 		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
 		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
@@ -87,6 +88,39 @@ class ReplayTests {
 		invoker.play("replayCommand");
 		
 		assertEquals("Helld", engine.getBufferContents());
+	}
+	
+	@Test
+	void replayDelete() throws CommandException {
+		Command deleteCommand = new DeleteCommand(engine, caretaker);
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		invoker.addCommandToInvoker("deleteCommand", deleteCommand);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
+		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+		
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(3);
+		
+		invoker.play("insertCommand");
+		
+		caretaker.start();
+		
+		invoker.play("setEndIndex");
+		invoker.play("setBeginIndex");
+		invoker.play("deleteCommand");
+		
+		caretaker.stop();
+		
+		Command replayCommand = new ReplayCommand(caretaker);
+		invoker.addCommandToInvoker("replayCommand", replayCommand);
+		
+		invoker.play("replayCommand");
+		
+		assertEquals("world", engine.getBufferContents());
 	}
 
 }

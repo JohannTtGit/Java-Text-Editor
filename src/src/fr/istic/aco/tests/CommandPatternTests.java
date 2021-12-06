@@ -104,7 +104,7 @@ class CommandPatternTests {
 	@Test
 	void deleteCommand() throws CommandException {
 		
-		Command deleteCommand = new DeleteCommand(engine);
+		Command deleteCommand = new DeleteCommand(engine, caretaker);
         Command insertCommand = new InsertCommand(engine, invoker, caretaker);
 		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
 		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);

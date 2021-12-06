@@ -33,8 +33,6 @@ public class CutSelectedTextCommand implements CommandGlobal {
 
 
 	@Override
-	public void restoreFromMemento(Memento memento) {
-				
-	}
+	public void restoreFromMemento(Memento memento) {}
 
 }
