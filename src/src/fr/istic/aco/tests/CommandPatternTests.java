@@ -37,16 +37,17 @@ class CommandPatternTests {
 	@Test
 	void setBeginAndEndIndex() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
-		invoker.setContentToInsert("Hello world");
-		
-		invoker.play("insertCommand");
-		
-		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
-		Command setEndIndex = new setEndIndexCommand(engine, 3);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
 		
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(3);
+		
+		invoker.play("insertCommand");
 		invoker.play("setEndIndex");
 		invoker.play("setBeginIndex");
 		
@@ -56,71 +57,69 @@ class CommandPatternTests {
 	
 	@Test
 	void CopySelectedTextCommand() throws CommandException {
-		Command copySelectedTextCommand = new CopySelectedTextCommand(engine);
+        Command copySelectedTextCommand = new CopySelectedTextCommand(engine, caretaker);
         Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-        invoker.addCommandToInvoker("insertCommand", insertCommand);
-        invoker.addCommandToInvoker("insertCommand", insertCommand);
-        invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
-        invoker.setContentToInsert("Hello world");
-        
-		invoker.play("insertCommand");
-		
-		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
-		Command setEndIndex = new setEndIndexCommand(engine, 1);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+        
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(1);
 		
+		invoker.play("insertCommand");
 		invoker.play("setEndIndex");
 		invoker.play("setBeginIndex");
-        
 		invoker.play("copySelectedTextCommand");
+		
 		assertEquals("H", engine.getClipboardContents());
 	}
 	
 	@Test
 	void CutSelectedTextCommand() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
+        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		invoker.addCommandToInvoker("cutSelectedTextCommand", cutSelectedTextCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
-		invoker.setContentToInsert("Hello world");
-		
-		invoker.play("insertCommand");
-		
-		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
-		Command setEndIndex = new setEndIndexCommand(engine, 1);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+        
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(1);
 		
+		invoker.play("insertCommand");
 		invoker.play("setEndIndex");
 		invoker.play("setBeginIndex");
-        
-        Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
-        invoker.addCommandToInvoker("cutSelectedTextCommand", cutSelectedTextCommand);
-        
 		invoker.play("cutSelectedTextCommand");
-		
+				
 		assertEquals("ello world", engine.getBufferContents());
 	}
 	
 	@Test
 	void deleteCommand() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		
+		Command deleteCommand = new DeleteCommand(engine);
+        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		invoker.addCommandToInvoker("deleteCommand", deleteCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
-		invoker.setContentToInsert("Hello world");
-		
-		invoker.play("insertCommand");
-		
-		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
-		Command setEndIndex = new setEndIndexCommand(engine, 3);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+        
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(3);
 		
+		invoker.play("insertCommand");
 		invoker.play("setEndIndex");
 		invoker.play("setBeginIndex");
-        
-        Command deleteCommand = new DeleteCommand(engine);
-        invoker.addCommandToInvoker("deleteCommand", deleteCommand);
-        invoker.addCommandToInvoker("insertCommand", insertCommand);
-        
 		invoker.play("deleteCommand");
 		
 		assertEquals("lo world", engine.getBufferContents());
@@ -128,39 +127,28 @@ class CommandPatternTests {
 	
 	@Test
 	void pasteClipboardCommand() throws CommandException {
+		Command pasteCommand = new PasteClipboardCommand(engine, caretaker);
 		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine);
+		invoker.addCommandToInvoker("pasteCommand", pasteCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
-		invoker.setContentToInsert("Hello world");
-		
-		invoker.play("insertCommand");
-		
-		Command setBeginIndex = new setBeginIndexCommand(engine, 0);
-		Command setEndIndex = new setEndIndexCommand(engine, 3);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+		invoker.addCommandToInvoker("cutSelectedTextCommand", cutSelectedTextCommand);
 		
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(3);
+		
+		invoker.play("insertCommand");
 		invoker.play("setEndIndex");
 		invoker.play("setBeginIndex");
+        invoker.play("cutSelectedTextCommand");
+        invoker.play("pasteCommand");
         
-        Command pasteCommand = new PasteClipboardCommand(engine);
-        invoker.addCommandToInvoker("pasteCommand", pasteCommand);
-        
-		invoker.play("pasteCommand");
-		assertEquals("", engine.getClipboardContents());
-		assertEquals("lo world", engine.getBufferContents());
-		
-		Command copySelectedTextCommand = new CopySelectedTextCommand(engine);
-		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
-		
-		invoker.play("copySelectedTextCommand");
-		
-		assertEquals("lo ", engine.getClipboardContents());
-		assertEquals(0, engine.getSelection().getBeginIndex());
-    	assertEquals(3, engine.getSelection().getEndIndex());
-    	
-		invoker.play("pasteCommand");
-		
-		assertEquals("lo world", engine.getBufferContents());
+        assertEquals("Helworld", engine.getBufferContents());
 	}
 	
 	

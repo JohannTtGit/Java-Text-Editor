@@ -5,17 +5,17 @@ import fr.istic.aco.editor.Engine;
 
 public class setBeginIndexCommand implements CommandGlobal {
 	
-	Engine engine;
-	int beginIndex;
+	private Engine engine;
+	private Invoker invoker;
 	
-	public setBeginIndexCommand(Engine engine, int beginIndex) {
+	public setBeginIndexCommand(Engine engine, Invoker invoker) {
 		this.engine = engine;
-		this.beginIndex = beginIndex;
+		this.invoker = invoker;
 	}
 
 	@Override
 	public void execute() {
-		engine.getSelection().setBeginIndex(beginIndex);
+		engine.getSelection().setBeginIndex(invoker.getBeginIndex());
 	}
 
 	@Override

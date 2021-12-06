@@ -8,7 +8,7 @@ public interface Invoker {
 	
 	/**
 	 * executes a given command
-	 * @param command's name to be executed (non-null)
+	 * @param commandName : command's name to be executed (non-null)
 	 * @throws CommandException
 	 */
 	void play(String commandName) throws CommandException;

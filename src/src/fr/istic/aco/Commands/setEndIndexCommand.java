@@ -5,17 +5,17 @@ import fr.istic.aco.editor.Engine;
 
 public class setEndIndexCommand implements CommandGlobal {
 	
-	Engine engine;
-	int endIndex;
+	private Engine engine;
+	private Invoker invoker;
 	
-	public setEndIndexCommand(Engine engine, int endIndex) {
+	public setEndIndexCommand(Engine engine, Invoker invoker) {
 		this.engine = engine;
-		this.endIndex = endIndex;
+		this.invoker = invoker;
 	}
 
 	@Override
 	public void execute() {
-		engine.getSelection().setEndIndex(endIndex);
+		engine.getSelection().setEndIndex(invoker.getEndIndex());
 	}
 
 	@Override

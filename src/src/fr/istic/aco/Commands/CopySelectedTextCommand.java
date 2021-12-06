@@ -1,5 +1,6 @@
 package fr.istic.aco.Commands;
 
+import fr.istic.aco.Memento.CareTaker;
 import fr.istic.aco.Memento.Memento;
 import fr.istic.aco.editor.Engine;
 
@@ -11,13 +12,16 @@ import fr.istic.aco.editor.Engine;
 public class CopySelectedTextCommand implements CommandGlobal {
 	
 	private Engine engine;
+	private CareTaker caretaker;
 	
-	public CopySelectedTextCommand(Engine engine) {
+	public CopySelectedTextCommand(Engine engine, CareTaker caretaker) {
 		this.engine = engine;
+		this.caretaker = caretaker;
 	}
 
 	@Override
 	public void execute() {
+		caretaker.save(this);
 		engine.copySelectedText();
 	}
 

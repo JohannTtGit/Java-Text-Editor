@@ -1,5 +1,6 @@
 package fr.istic.aco.Commands;
 
+import fr.istic.aco.Memento.CareTaker;
 import fr.istic.aco.Memento.Memento;
 import fr.istic.aco.editor.Engine;
 
@@ -11,9 +12,11 @@ import fr.istic.aco.editor.Engine;
 public class PasteClipboardCommand implements CommandGlobal {
 
 	Engine engine;
+	CareTaker caretaker;
 	
-	public PasteClipboardCommand(Engine engine) {
+	public PasteClipboardCommand(Engine engine, CareTaker caretaker) {
 		this.engine = engine;
+		this.caretaker = caretaker;
 	}
 	@Override
 	public void execute() {
