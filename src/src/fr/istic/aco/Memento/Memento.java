@@ -6,13 +6,13 @@ package fr.istic.aco.Memento;
 public interface Memento {
 
 	/*
-	 * @return : Textual state of a Memento
+	 * @return Textual state of a Memento
 	 */
-	String getState();
+	public String getState();
 	
 	/*
-	 * @return : Numerical state of a Memento
+	 * @return Numerical state of a Memento
 	 */
-	int getIntState();
+	public int getIntState();
 
 }

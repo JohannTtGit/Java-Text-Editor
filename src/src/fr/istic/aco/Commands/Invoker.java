@@ -15,11 +15,34 @@ public interface Invoker {
 
 	
 	//Method to handle the function's argument in the context of the Command design pattern
+	
+	/*
+	 * @return Stored content to insert with method insert()
+	 */
 	String getContentToInsert();
+	
+	/*
+	 * Update the stored content to insert (normally before executing each command)
+	 */
 	void setContentToInsert(String content);
 	
+	/*
+	 * @return Stored Selection begin index 
+	 */
 	int getBeginIndex();
+	
+	/*
+	 * @return Stored Selection end index 
+	 */
 	int getEndIndex();
+	
+	/*
+	 * Update the stored Selection begin index
+	 */
 	void setBeginIndex(int beginIndex);
+	
+	/*
+	 * Update the stored Selection end index
+	 */
 	void setEndIndex(int endIndex);
 }

@@ -1,8 +1,6 @@
 package fr.istic.aco.Commands;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import fr.istic.aco.Exceptions.CommandException;
@@ -12,7 +10,6 @@ import fr.istic.aco.Exceptions.CommandException;
  */
 public class InvokerImpl implements Invoker {
 	private Map<String, Command> commands = new HashMap<String, Command>();
-	private List<Command> command_history = new ArrayList<Command>();
 	
 	//Attributes used to ensure the Command design pattern
 	private String contentToInsert; //Used for insertion in the context of Command design pattern
@@ -33,7 +30,6 @@ public class InvokerImpl implements Invoker {
 		}
 		
 		Command command = commands.get(nameCommand);
-		command_history.add(command);
 		command.execute();
 	}
 	

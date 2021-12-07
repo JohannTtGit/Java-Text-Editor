@@ -9,7 +9,7 @@ package fr.istic.aco.Memento;
 public interface Originator {
 	
 	/* 
-	 * @return : New memento containing the command state to be saved.
+	 * @return New memento containing the command state to be saved.
 	 */
 	public Memento sendMementoToCareTaker();
 	

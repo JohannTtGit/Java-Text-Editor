@@ -1,13 +1,13 @@
 package fr.istic.aco.Selection;
 
 /**
- * implements the selection that allows to get and set user selections
+ * implements the interface Selection that allows to get and set user's selection
  * @author Niklas, Johann
  *
  */
 public class SelectionImpl implements Selection {
 	
-	int beginIndex; // current selection for beginn Index
+	int beginIndex; // current selection for begin Index
 	int endIndex; // current selection for end Index
 	final int BUFFER_BEGIN_INDEX = 0;
 	
@@ -23,14 +23,17 @@ public class SelectionImpl implements Selection {
 	public int getBeginIndex() {
 		return beginIndex;
 	}
+	
 	@Override
 	public int getEndIndex() {
 		return endIndex;
 	}
+	
 	@Override
 	public int getBufferBeginIndex() {
 		return BUFFER_BEGIN_INDEX;
 	}
+	
 	@Override
 	public int getBufferEndIndex() {
 		return buffer.length();
