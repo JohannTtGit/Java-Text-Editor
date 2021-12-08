@@ -1,6 +1,7 @@
 package fr.istic.aco.Memento;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import fr.istic.aco.Commands.CommandGlobal;
 
@@ -45,7 +46,27 @@ public class CareTakerImpl implements CareTaker {
 			command = command_history.get(i);
 			command.restoreFromMemento(savedStates.get(i));
 			command.execute();
-		}
-		
+		}	
 	}
+	
+	@Override
+	public void undo() {
+		ArrayList<CommandGlobal> commandToIterate = new ArrayList<>(command_history);
+		List<Memento> statesToIterate = new ArrayList<>(savedStates);
+		
+		commandToIterate.remove(commandToIterate.size() - 1);
+		statesToIterate.remove(statesToIterate.size() - 1);
+		
+		Collections.reverse(commandToIterate);
+		Collections.reverse(statesToIterate);
+		
+		CommandGlobal command = null;
+		
+		for(int i=0; i < commandToIterate.size(); i++) {
+			command = commandToIterate.get(i);
+			command.restoreFromMemento(statesToIterate.get(i));
+			command.execute();
+		}
+	}
+	
 }

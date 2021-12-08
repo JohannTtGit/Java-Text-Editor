@@ -35,4 +35,10 @@ public interface CareTaker {
 	 */
 	public Memento getMemento(int index);
 	
+	/*
+	 * Undo a command by removing the last command and replaying from the
+	 * beginning all the remaining.
+	 */
+	public void undo();
+	
 }
