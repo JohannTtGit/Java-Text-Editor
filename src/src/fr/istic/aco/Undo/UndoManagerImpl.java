@@ -25,11 +25,16 @@ public class UndoManagerImpl implements UndoManager {
 	
 	@Override
 	public void undo() {
+		
+		//Remove before copy otherwise two consecutive undo cannot work
+		if(command_history.size() > 0) {
+			command_history.remove(command_history.size() - 1);
+			savedStates.remove(savedStates.size() - 1);
+		}
+		
+		
 		ArrayList<CommandGlobal> commandToIterate = new ArrayList<>(command_history);
 		List<Memento> statesToIterate = new ArrayList<>(savedStates);
-		
-		commandToIterate.remove(commandToIterate.size() - 1);
-		statesToIterate.remove(statesToIterate.size() - 1);
 		
 		Collections.reverse(commandToIterate);
 		Collections.reverse(statesToIterate);
@@ -40,6 +45,13 @@ public class UndoManagerImpl implements UndoManager {
 			command = commandToIterate.get(i);
 			command.restoreFromMemento(statesToIterate.get(i));
 			command.execute();
+		}
+		
+		if(command_history.size() > 0) {
+			command_history.remove(command_history.size() - 1);
+			savedStates.remove(savedStates.size() - 1);
+			command_history.remove(command_history.size() - 1);
+			savedStates.remove(savedStates.size() - 1);
 		}
 	}
 

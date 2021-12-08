@@ -50,9 +50,8 @@ public class SelectionImpl implements Selection {
 	
 	@Override
 	public void setEndIndex(int endIndex) throws IndexOutOfBoundsException {
-		
 		if(endIndex > this.getBufferEndIndex()) {
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException("End selection index exceed buffer length");
 		}
 		this.endIndex = endIndex;
 	}
