@@ -18,7 +18,10 @@ import fr.istic.aco.Commands.ReplayCommand;
 import fr.istic.aco.Commands.setBeginIndexCommand;
 import fr.istic.aco.Commands.setEndIndexCommand;
 import fr.istic.aco.Exceptions.CommandException;
+import fr.istic.aco.Recorder.Recorder;
 import fr.istic.aco.Recorder.RecorderImpl;
+import fr.istic.aco.Undo.UndoManager;
+import fr.istic.aco.Undo.UndoManagerImpl;
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 
@@ -26,26 +29,28 @@ class ReplayTests {
 	
 	Engine engine;
 	Invoker invoker;
-	RecorderImpl caretaker;
+	Recorder recorder;
+	UndoManager undoManager;
 	
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
-        caretaker = new RecorderImpl();
+        recorder = new RecorderImpl();
+        undoManager = new UndoManagerImpl();
     }
 
 	@Test
 	void replayUniqueInsert() throws CommandException {
-		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
-		caretaker.start();
+		recorder.start();
 		invoker.play("insertCommand");
-		caretaker.stop();
+		recorder.stop();
 		
-		Command replayCommand = new ReplayCommand(caretaker);
+		Command replayCommand = new ReplayCommand(recorder);
 		invoker.addCommandToInvoker("replayCommand", replayCommand);
 		invoker.play("replayCommand");
 		
@@ -54,11 +59,11 @@ class ReplayTests {
 	
 	@Test
 	void replayInsertAndCutPaste() throws CommandException{
-		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
-		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, caretaker);
-		CommandGlobal pasteCommand = new PasteClipboardCommand(engine, caretaker);
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
+		CommandGlobal pasteCommand = new PasteClipboardCommand(engine, recorder, undoManager);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
@@ -72,18 +77,18 @@ class ReplayTests {
 		
 		invoker.play("insertCommand");
 		
-		caretaker.start();
+		recorder.start();
 		
 		invoker.play("setEndIndex");
 		invoker.play("setBeginIndex");
 		invoker.play("cutSelectedTextCommand");
 		invoker.play("pasteCommand");
 		
-		caretaker.stop();
+		recorder.stop();
 		
 		assertEquals("Helworld", engine.getBufferContents());
 		
-		Command replayCommand = new ReplayCommand(caretaker);
+		Command replayCommand = new ReplayCommand(recorder);
 		invoker.addCommandToInvoker("replayCommand", replayCommand);
 		
 		invoker.play("replayCommand");
@@ -93,11 +98,11 @@ class ReplayTests {
 	
 	@Test
 	void replayInsertAndCopyPaste() throws CommandException{
-		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
-		Command copySelectedTextCommand = new CopySelectedTextCommand(engine, caretaker);
-		CommandGlobal pasteCommand = new PasteClipboardCommand(engine, caretaker);
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
+		Command copySelectedTextCommand = new CopySelectedTextCommand(engine, recorder, undoManager);
+		CommandGlobal pasteCommand = new PasteClipboardCommand(engine, recorder, undoManager);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
@@ -110,7 +115,7 @@ class ReplayTests {
 		invoker.setEndIndex(3);
 		
 		
-		caretaker.start();
+		recorder.start();
 		
 		invoker.play("insertCommand");
 		invoker.play("setEndIndex");
@@ -118,9 +123,9 @@ class ReplayTests {
 		invoker.play("copySelectedTextCommand");
 		invoker.play("pasteCommand");
 		
-		caretaker.stop();
+		recorder.stop();
 		
-		Command replayCommand = new ReplayCommand(caretaker);
+		Command replayCommand = new ReplayCommand(recorder);
 		invoker.addCommandToInvoker("replayCommand", replayCommand);
 		
 		invoker.play("replayCommand");
@@ -130,10 +135,10 @@ class ReplayTests {
 	
 	@Test
 	void replayDelete() throws CommandException {
-		Command deleteCommand = new DeleteCommand(engine, caretaker);
-		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		Command deleteCommand = new DeleteCommand(engine, recorder, undoManager);
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("deleteCommand", deleteCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -145,15 +150,15 @@ class ReplayTests {
 		
 		invoker.play("insertCommand");
 		
-		caretaker.start();
+		recorder.start();
 		
 		invoker.play("setEndIndex");
 		invoker.play("setBeginIndex");
 		invoker.play("deleteCommand");
 		
-		caretaker.stop();
+		recorder.stop();
 		
-		Command replayCommand = new ReplayCommand(caretaker);
+		Command replayCommand = new ReplayCommand(recorder);
 		invoker.addCommandToInvoker("replayCommand", replayCommand);
 		
 		invoker.play("replayCommand");

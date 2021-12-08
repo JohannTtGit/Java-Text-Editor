@@ -14,13 +14,13 @@ public class UndoManagerImpl implements UndoManager {
 
 	@Override
 	public void save(CommandGlobal command) {
-		// TODO Auto-generated method stub
+		this.command_history.add(command);
+		this.savedStates.add(command.sendMementoToCareTaker());
 	}
 
 	@Override
 	public Memento getMemento(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.savedStates.get(index);
 	}
 	
 	@Override

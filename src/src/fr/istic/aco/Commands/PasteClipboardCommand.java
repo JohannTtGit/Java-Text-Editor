@@ -2,6 +2,7 @@ package fr.istic.aco.Commands;
 
 import fr.istic.aco.Memento.CareTaker;
 import fr.istic.aco.Memento.Memento;
+import fr.istic.aco.Undo.UndoManager;
 import fr.istic.aco.editor.Engine;
 
 /**
@@ -11,17 +12,20 @@ import fr.istic.aco.editor.Engine;
  */
 public class PasteClipboardCommand implements CommandGlobal {
 
-	Engine engine;
-	CareTaker caretaker;
+	private Engine engine;
+	private CareTaker caretaker;
+	private UndoManager undoManager;
 	
-	public PasteClipboardCommand(Engine engine, CareTaker caretaker) {
+	public PasteClipboardCommand(Engine engine, CareTaker caretaker, UndoManager undoManager) {
 		this.engine = engine;
 		this.caretaker = caretaker;
+		this.undoManager = undoManager;
 	}
 	@Override
 	public void execute() {
 		engine.pasteClipboard();
 		caretaker.save(this);
+		undoManager.save(this);
 	}
 	
 	@Override

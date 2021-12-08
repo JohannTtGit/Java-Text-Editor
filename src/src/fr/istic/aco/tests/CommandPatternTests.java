@@ -7,25 +7,30 @@ import org.junit.jupiter.api.Test;
 
 import fr.istic.aco.Commands.*;
 import fr.istic.aco.Exceptions.CommandException;
+import fr.istic.aco.Recorder.Recorder;
 import fr.istic.aco.Recorder.RecorderImpl;
+import fr.istic.aco.Undo.UndoManager;
+import fr.istic.aco.Undo.UndoManagerImpl;
 import fr.istic.aco.editor.*;
 
 class CommandPatternTests {
 	
 	Engine engine;
 	Invoker invoker;
-	RecorderImpl caretaker;
+	Recorder recorder;
+	UndoManager undoManager;
 
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
-        caretaker = new RecorderImpl();
+        recorder = new RecorderImpl();
+        undoManager = new UndoManagerImpl();
     }
 	
 	@Test
 	void insertCommand() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
+		Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
@@ -36,9 +41,9 @@ class CommandPatternTests {
 	
 	@Test
 	void setBeginAndEndIndex() throws CommandException {
-		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
 		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
@@ -57,10 +62,10 @@ class CommandPatternTests {
 	
 	@Test
 	void CopySelectedTextCommand() throws CommandException {
-        Command copySelectedTextCommand = new CopySelectedTextCommand(engine, caretaker);
-        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+        Command copySelectedTextCommand = new CopySelectedTextCommand(engine, recorder, undoManager);
+        Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -80,10 +85,10 @@ class CommandPatternTests {
 	
 	@Test
 	void CutSelectedTextCommand() throws CommandException {
-		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, caretaker);
-        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
+        Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("cutSelectedTextCommand", cutSelectedTextCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -104,10 +109,10 @@ class CommandPatternTests {
 	@Test
 	void deleteCommand() throws CommandException {
 		
-		Command deleteCommand = new DeleteCommand(engine, caretaker);
-        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+		Command deleteCommand = new DeleteCommand(engine, recorder, undoManager);
+        Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("deleteCommand", deleteCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -127,11 +132,11 @@ class CommandPatternTests {
 	
 	@Test
 	void cutAndPast() throws CommandException {
-		Command pasteCommand = new PasteClipboardCommand(engine, caretaker);
-		Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
-		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, caretaker);
+		Command pasteCommand = new PasteClipboardCommand(engine, recorder, undoManager);
+		Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
 		invoker.addCommandToInvoker("pasteCommand", pasteCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
@@ -153,11 +158,11 @@ class CommandPatternTests {
 	
 	@Test
 	void copyAndPast() throws CommandException {
-        Command copySelectedTextCommand = new CopySelectedTextCommand(engine, caretaker);
-        Command pasteClipboardCommand = new PasteClipboardCommand(engine, caretaker);
-        Command insertCommand = new InsertCommand(engine, invoker, caretaker);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, caretaker);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, caretaker);
+        Command copySelectedTextCommand = new CopySelectedTextCommand(engine, recorder, undoManager);
+        Command pasteClipboardCommand = new PasteClipboardCommand(engine, recorder, undoManager);
+        Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
 		invoker.addCommandToInvoker("pasteClipboardCommand", pasteClipboardCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);

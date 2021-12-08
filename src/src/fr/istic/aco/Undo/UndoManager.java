@@ -3,8 +3,8 @@ package fr.istic.aco.Undo;
 import fr.istic.aco.Memento.CareTaker;
 
 /*
- * In the context of UNDO features, embodies the CareTaker role
- * 
+ * Interface that provides the necessary methods as part of the UNDO features
+ * In the context of the Memento design pattern features, embodies the CareTaker role
  */
 
 public interface UndoManager extends CareTaker {
