@@ -18,7 +18,7 @@ import fr.istic.aco.Commands.ReplayCommand;
 import fr.istic.aco.Commands.setBeginIndexCommand;
 import fr.istic.aco.Commands.setEndIndexCommand;
 import fr.istic.aco.Exceptions.CommandException;
-import fr.istic.aco.Memento.CareTakerImpl;
+import fr.istic.aco.Recorder.RecorderImpl;
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 
@@ -26,13 +26,13 @@ class ReplayTests {
 	
 	Engine engine;
 	Invoker invoker;
-	CareTakerImpl caretaker;
+	RecorderImpl caretaker;
 	
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
-        caretaker = new CareTakerImpl();
+        caretaker = new RecorderImpl();
     }
 
 	@Test

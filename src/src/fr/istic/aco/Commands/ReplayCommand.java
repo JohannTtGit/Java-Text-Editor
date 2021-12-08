@@ -1,17 +1,17 @@
 package fr.istic.aco.Commands;
 
-import fr.istic.aco.Memento.CareTaker;
+import fr.istic.aco.Recorder.Recorder;
 
 public class ReplayCommand implements Command {
 	
-	private CareTaker caretaker; //Needed as part of the Memento design pattern
+	private Recorder recorder;
 	
-	public ReplayCommand(CareTaker caretaker) {
-		this.caretaker = caretaker;
+	public ReplayCommand(Recorder recorder) {
+		this.recorder = recorder;
 	}
 
 	@Override
 	public void execute() {
-		caretaker.replay();
+		recorder.replay();
 	}
 }

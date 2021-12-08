@@ -11,7 +11,9 @@ import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
 import fr.istic.aco.Commands.UndoCommand;
 import fr.istic.aco.Exceptions.CommandException;
-import fr.istic.aco.Memento.CareTakerImpl;
+import fr.istic.aco.Recorder.RecorderImpl;
+import fr.istic.aco.Undo.UndoManager;
+import fr.istic.aco.Undo.UndoManagerImpl;
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 
@@ -19,19 +21,21 @@ class UndoTests {
 	
 	Engine engine;
 	Invoker invoker;
-	CareTakerImpl caretaker;
+	RecorderImpl caretaker;
+	UndoManager undoManager;
 	
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
-        caretaker = new CareTakerImpl();
+        caretaker = new RecorderImpl();
+        undoManager = new UndoManagerImpl();
     }
 	
 	@Test
 	void undoSimple() throws CommandException {
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, caretaker);
-		CommandGlobal undoCommand = new UndoCommand(engine, caretaker);
+		CommandGlobal undoCommand = new UndoCommand(engine, undoManager);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.addCommandToInvoker("undo", undoCommand);
 		
