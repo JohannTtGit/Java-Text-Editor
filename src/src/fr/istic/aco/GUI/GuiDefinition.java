@@ -78,10 +78,10 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		this.pastBtn = new JButton("Past");
 		this.undoBtn = new JButton("Undo");
 		
-		selectBtn.addActionListener(this);
-		selectBtn.addActionListener(this);
-		selectBtn.addActionListener(this);
-		selectBtn.addActionListener(this);
+		selectBtn.addActionListener(this); selectBtn.setEnabled(false);
+		copyBtn.addActionListener(this); copyBtn.setEnabled(false);
+		cutBtn.addActionListener(this); cutBtn.setEnabled(false);
+		pastBtn.addActionListener(this); pastBtn.setEnabled(false);
 		undoBtn.addActionListener(this); undoBtn.setEnabled(false);
 		
 		panel.add(selectBtn);
@@ -97,9 +97,13 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	
 
 
-
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		if(engine.getBufferContents() != "") {
+			undoBtn.setEnabled(true);
+			undoBtn.setEnabled(true);
+		}
 		
 		//Classical insertion
 		if(Character.isLetter(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_SPACE || Character.isDigit(e.getKeyChar())) {
@@ -160,10 +164,6 @@ public class GuiDefinition implements KeyListener, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if(engine.getBufferContents() == "") {
-			undoBtn.setEnabled(false);
-		}
 		
 		if(e.getSource() == undoBtn) {
 			try {
