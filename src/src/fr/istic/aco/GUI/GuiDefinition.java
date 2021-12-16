@@ -14,6 +14,8 @@ import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
 import fr.istic.aco.Commands.UndoCommand;
+import fr.istic.aco.Commands.setBeginIndexCommand;
+import fr.istic.aco.Commands.setEndIndexCommand;
 import fr.istic.aco.Exceptions.CommandException;
 import fr.istic.aco.Recorder.Recorder;
 import fr.istic.aco.Recorder.RecorderImpl;
@@ -30,6 +32,8 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	private UndoManager undoManager;
 	
 	Command insertCommand;
+	Command setBeginIndex;
+	Command setEndIndex;
 	Command undoCommand;
 	Command deleteCommand;
 	
@@ -46,11 +50,15 @@ public class GuiDefinition implements KeyListener, ActionListener {
         this.undoManager = new UndoManagerImpl();
         
         this.insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+        this.setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+        this.setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
         this.undoCommand = new UndoCommand(engine, undoManager);
         this.deleteCommand = new DeleteCommand(engine, recorder, undoManager);
         invoker.addCommandToInvoker("insert", insertCommand);
+        invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
+        invoker.addCommandToInvoker("setEndIndex", setEndIndex);
         invoker.addCommandToInvoker("undo", undoCommand);
-        invoker.addCommandToInvoker("delete", undoCommand);
+        invoker.addCommandToInvoker("delete", deleteCommand);
 		
         this.frame = new JFrame();
 		this.panel = new JPanel();
@@ -89,36 +97,55 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	
 
 
+
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {
 		
-		System.out.println(KeyEvent.VK_BACK_SPACE);
-		System.out.println(e.getKeyCode());
-		
-		if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+		//Classical insertion
+		if(Character.isLetter(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_SPACE || Character.isDigit(e.getKeyChar())) {
+			
+			//Update the textArea content with the buffer content because
+			// we only want to use the TextEditor features
+			this.textArea.setText(engine.getBufferContents());
+			
 			invoker.setContentToInsert(String.valueOf(e.getKeyChar()));
+			
+			int currentPosition = textArea.getCaretPosition()+1;
+			
 			try {
 				invoker.play("insert");
+				
+				//Replace cursor at the end, after each insert Command
+				invoker.setEndIndex(currentPosition);
+				invoker.setBeginIndex(currentPosition);
+				invoker.play("setEndIndex");
+				invoker.play("setBeginIndex");
+			}
+			catch (CommandException e1) {
+				e1.printStackTrace();
+			}
+		}
+	
+		//Press BACK SPACE key -> Delete
+		else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			
+			invoker.setBeginIndex(engine.getSelection().getBeginIndex()-1);
+			
+			try {
+				invoker.play("setBeginIndex");
+				invoker.play("delete");
 			}
 			catch (CommandException e1) {
 				e1.printStackTrace();
 			}
 			
-			//Set the "cursor selection" for each type
-			int currentPosition = textArea.getCaretPosition();
-			engine.getSelection().setEndIndex(currentPosition);
-			engine.getSelection().setBeginIndex(currentPosition);
-		}
-		
-		//Set the "cursor selection" if the delete key is pressed
-		//Execute the DeleteCommand
-		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			textArea.setText(engine.getBufferContents());
+			
+			//Move the cursor to enable a new delete action
+			invoker.setEndIndex(engine.getSelection().getEndIndex()-1);
+			
 			try {
-				System.out.println("hey");
-				engine.getSelection().setEndIndex(textArea.getCaretPosition()+1);
-				engine.getSelection().setBeginIndex(textArea.getCaretPosition());
-				invoker.play("delete");
-				textArea.setText(engine.getBufferContents() + "<3");
+				invoker.play("setEndIndex");
 			}
 			catch (CommandException e1) {
 				e1.printStackTrace();
@@ -127,8 +154,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {}
-
+	public void keyTyped(KeyEvent e) {}
 	@Override
 	public void keyReleased(KeyEvent e) {}
 
