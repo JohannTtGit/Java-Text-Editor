@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import fr.istic.aco.Commands.Command;
+import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
@@ -21,7 +22,7 @@ import fr.istic.aco.Undo.UndoManagerImpl;
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 
-public class GuiDefinition implements KeyListener {
+public class GuiDefinition implements KeyListener, ActionListener {
 	
 	private Engine engine;
 	private Invoker invoker;
@@ -30,6 +31,7 @@ public class GuiDefinition implements KeyListener {
 	
 	Command insertCommand;
 	Command undoCommand;
+	Command deleteCommand;
 	
 	private JFrame frame;
 	private JPanel panel;
@@ -45,8 +47,10 @@ public class GuiDefinition implements KeyListener {
         
         this.insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
         this.undoCommand = new UndoCommand(engine, undoManager);
+        this.deleteCommand = new DeleteCommand(engine, recorder, undoManager);
         invoker.addCommandToInvoker("insert", insertCommand);
         invoker.addCommandToInvoker("undo", undoCommand);
+        invoker.addCommandToInvoker("delete", undoCommand);
 		
         this.frame = new JFrame();
 		this.panel = new JPanel();
@@ -66,17 +70,11 @@ public class GuiDefinition implements KeyListener {
 		this.pastBtn = new JButton("Past");
 		this.undoBtn = new JButton("Undo");
 		
-		ButtonListener selectListener = new ButtonListener();
-		ButtonListener copyListener = new ButtonListener();
-		ButtonListener cutListener = new ButtonListener();
-		ButtonListener pastListener = new ButtonListener();
-		ButtonListener undoListener = new ButtonListener();
-		
-		selectBtn.addActionListener(selectListener);
-		selectBtn.addActionListener(copyListener);
-		selectBtn.addActionListener(cutListener);
-		selectBtn.addActionListener(pastListener);
-		undoBtn.addActionListener(undoListener); undoBtn.setEnabled(false);
+		selectBtn.addActionListener(this);
+		selectBtn.addActionListener(this);
+		selectBtn.addActionListener(this);
+		selectBtn.addActionListener(this);
+		undoBtn.addActionListener(this); undoBtn.setEnabled(false);
 		
 		panel.add(selectBtn);
 		panel.add(copyBtn);
@@ -89,38 +87,42 @@ public class GuiDefinition implements KeyListener {
 		this.frame.setVisible(true);
 	}
 	
-	public class ButtonListener implements ActionListener {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			if(e.getSource() == undoBtn) {
-				try {
-					invoker.play("undo");
-				}
-				catch (CommandException e1) {
-					e1.printStackTrace();
-				}
-				
-				textArea.setText(engine.getBufferContents());
-				
-			}
-		}
-		
-	}
-	
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		
-		undoBtn.setEnabled(true);
-		invoker.setContentToInsert(String.valueOf(e.getKeyChar()));
-		try {
-			invoker.play("insert");
-			System.out.println(engine.getBufferContents());
+		System.out.println(KeyEvent.VK_BACK_SPACE);
+		System.out.println(e.getKeyCode());
+		
+		if(e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
+			invoker.setContentToInsert(String.valueOf(e.getKeyChar()));
+			try {
+				invoker.play("insert");
+			}
+			catch (CommandException e1) {
+				e1.printStackTrace();
+			}
+			
+			//Set the "cursor selection" for each type
+			int currentPosition = textArea.getCaretPosition();
+			engine.getSelection().setEndIndex(currentPosition);
+			engine.getSelection().setBeginIndex(currentPosition);
 		}
-		catch (CommandException e1) {
-			e1.printStackTrace();
+		
+		//Set the "cursor selection" if the delete key is pressed
+		//Execute the DeleteCommand
+		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			try {
+				System.out.println("hey");
+				engine.getSelection().setEndIndex(textArea.getCaretPosition()+1);
+				engine.getSelection().setBeginIndex(textArea.getCaretPosition());
+				invoker.play("delete");
+				textArea.setText(engine.getBufferContents() + "<3");
+			}
+			catch (CommandException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -129,6 +131,25 @@ public class GuiDefinition implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(engine.getBufferContents() == "") {
+			undoBtn.setEnabled(false);
+		}
+		
+		if(e.getSource() == undoBtn) {
+			try {
+				invoker.play("undo");
+			}
+			catch (CommandException e1) {
+				e1.printStackTrace();
+			}
+			
+			textArea.setText(engine.getBufferContents());
+		}
 	
 	
+	}
 }
