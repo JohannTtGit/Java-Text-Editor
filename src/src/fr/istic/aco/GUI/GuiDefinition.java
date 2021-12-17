@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import fr.istic.aco.Commands.Command;
 import fr.istic.aco.Commands.DeleteCommand;
@@ -41,6 +42,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	private JPanel panel;
 	private JTextArea textArea;
 	private JButton selectBtn, copyBtn, cutBtn, pastBtn, undoBtn;
+	private JTextField selectionChoice;
 	
 	public GuiDefinition() {
 		this.engine = new EngineImpl();
@@ -77,20 +79,22 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		this.cutBtn = new JButton("Cut");
 		this.pastBtn = new JButton("Past");
 		this.undoBtn = new JButton("Undo");
+		this.selectionChoice = new JTextField(4);
 		
-		selectBtn.addActionListener(this); selectBtn.setEnabled(false);
+		selectBtn.addActionListener(this);
 		copyBtn.addActionListener(this); copyBtn.setEnabled(false);
 		cutBtn.addActionListener(this); cutBtn.setEnabled(false);
 		pastBtn.addActionListener(this); pastBtn.setEnabled(false);
 		undoBtn.addActionListener(this); undoBtn.setEnabled(false);
 		
+		panel.add(selectionChoice);
 		panel.add(selectBtn);
 		panel.add(copyBtn);
 		panel.add(cutBtn);
 		panel.add(pastBtn);
 		panel.add(undoBtn);
 		
-		this.frame.setTitle("Test");
+		this.frame.setTitle("Simple Text Editor");
 		this.frame.setSize(750,780);
 		this.frame.setVisible(true);
 	}
@@ -101,7 +105,6 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	public void keyPressed(KeyEvent e) {
 		
 		if(engine.getBufferContents() != "") {
-			undoBtn.setEnabled(true);
 			undoBtn.setEnabled(true);
 		}
 		
@@ -174,6 +177,30 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			}
 			
 			textArea.setText(engine.getBufferContents());
+		}
+		
+		if(e.getSource() == selectBtn) {
+			
+			//Get the wanted selection indexes in the text field
+			String wantedSelection = selectionChoice.getText();
+			
+			if(IntegrityFunctions.isCorrecteSelection(wantedSelection)) {
+				
+				int beginIndex = wantedSelection.charAt(0) - '0';
+				int endIndex = wantedSelection.charAt(2) - '0';
+				System.out.println(beginIndex);
+				System.out.println(endIndex);
+				
+				invoker.setEndIndex(endIndex);
+				invoker.setBeginIndex(beginIndex);
+				
+				try {
+					invoker.play("setEndIndex");
+					invoker.play("setBeginIndex");
+				} catch (CommandException e1) { e1.printStackTrace();}
+				
+				System.out.println("Selection done");
+			}
 		}
 	
 	
