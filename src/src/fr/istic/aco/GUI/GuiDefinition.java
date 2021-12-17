@@ -10,10 +10,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import fr.istic.aco.Commands.Command;
+import fr.istic.aco.Commands.CutSelectedTextCommand;
 import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
+import fr.istic.aco.Commands.PasteClipboardCommand;
 import fr.istic.aco.Commands.UndoCommand;
 import fr.istic.aco.Commands.setBeginIndexCommand;
 import fr.istic.aco.Commands.setEndIndexCommand;
@@ -37,6 +39,8 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	Command setEndIndex;
 	Command undoCommand;
 	Command deleteCommand;
+	Command cutCommand;
+	Command pastCommand;
 	
 	private JFrame frame;
 	private JPanel panel;
@@ -56,11 +60,15 @@ public class GuiDefinition implements KeyListener, ActionListener {
         this.setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
         this.undoCommand = new UndoCommand(engine, undoManager);
         this.deleteCommand = new DeleteCommand(engine, recorder, undoManager);
+        this.cutCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
+        this.pastCommand = new PasteClipboardCommand(engine, recorder, undoManager);
         invoker.addCommandToInvoker("insert", insertCommand);
         invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
         invoker.addCommandToInvoker("setEndIndex", setEndIndex);
         invoker.addCommandToInvoker("undo", undoCommand);
         invoker.addCommandToInvoker("delete", deleteCommand);
+        invoker.addCommandToInvoker("cut", cutCommand);
+        invoker.addCommandToInvoker("past", pastCommand);
 		
         this.frame = new JFrame();
 		this.panel = new JPanel();
@@ -188,8 +196,6 @@ public class GuiDefinition implements KeyListener, ActionListener {
 				
 				int beginIndex = wantedSelection.charAt(0) - '0';
 				int endIndex = wantedSelection.charAt(2) - '0';
-				System.out.println(beginIndex);
-				System.out.println(endIndex);
 				
 				invoker.setEndIndex(endIndex);
 				invoker.setBeginIndex(beginIndex);
@@ -199,8 +205,28 @@ public class GuiDefinition implements KeyListener, ActionListener {
 					invoker.play("setBeginIndex");
 				} catch (CommandException e1) { e1.printStackTrace();}
 				
-				System.out.println("Selection done");
+				copyBtn.setEnabled(true);
+				cutBtn.setEnabled(true);
+				pastBtn.setEnabled(true);
 			}
+		}
+		
+		if(e.getSource() == cutBtn) {
+			
+			try {
+				invoker.play("cut");
+			} catch (CommandException e1) {e1.printStackTrace();}
+			
+			textArea.setText(engine.getBufferContents());
+		}
+		
+		if(e.getSource() == pastBtn) {
+			
+			try {
+				invoker.play("past");
+			} catch (CommandException e1) {e1.printStackTrace();}
+			
+			textArea.setText(engine.getBufferContents());
 		}
 	
 	
