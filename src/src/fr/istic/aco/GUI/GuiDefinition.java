@@ -6,8 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import fr.istic.aco.Commands.Command;
 import fr.istic.aco.Commands.CopySelectedTextCommand;
@@ -48,7 +48,8 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	private JPanel panel;
 	private JTextArea textArea;
 	private JButton selectBtn, copyBtn, cutBtn, pastBtn, undoBtn;
-	private JTextField selectionChoice;
+	private JSpinner beginIndexSpinner;
+	private JSpinner endIndexSpinner;
 	
 	public GuiDefinition() {
 		this.engine = new EngineImpl();
@@ -83,6 +84,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		panel.add(textArea);
 		
 		panel.add(new JLabel("Buffer"));
+		panel.add(new JLabel(""));
 		
 		
 		//Buttons definition
@@ -91,7 +93,8 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		this.cutBtn = new JButton("Cut");
 		this.pastBtn = new JButton("Past");
 		this.undoBtn = new JButton("Undo");
-		this.selectionChoice = new JTextField(4);
+		this.beginIndexSpinner = new JSpinner();
+		this.endIndexSpinner = new JSpinner();
 		
 		selectBtn.addActionListener(this);
 		copyBtn.addActionListener(this); copyBtn.setEnabled(false);
@@ -99,7 +102,8 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		pastBtn.addActionListener(this); pastBtn.setEnabled(false);
 		undoBtn.addActionListener(this); undoBtn.setEnabled(false);
 		
-		panel.add(selectionChoice);
+		panel.add(beginIndexSpinner);
+		panel.add(endIndexSpinner);
 		panel.add(selectBtn);
 		panel.add(copyBtn);
 		panel.add(cutBtn);
@@ -193,28 +197,21 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		
 		if(e.getSource() == selectBtn) {
 			
-			//Get the wanted selection indexes in the text field
-			String wantedSelection = selectionChoice.getText();
+			//Get the wanted selection values
+			int beginIndex = (int) beginIndexSpinner.getValue();
+			int endIndex = (int) endIndexSpinner.getValue();
 			
-			if(CharacterFunctions.isCorrecteSelection(wantedSelection)) {
-				
-				int beginIndex = wantedSelection.charAt(0) - '0';
-				int endIndex = wantedSelection.charAt(2) - '0';
-				System.out.println(beginIndex);
-				System.out.println(endIndex);
-				
-				invoker.setEndIndex(endIndex);
-				invoker.setBeginIndex(beginIndex);
-				
-				try {
-					invoker.play("setEndIndex");
-					invoker.play("setBeginIndex");
-				} catch (CommandException e1) { e1.printStackTrace();}
-				
-				copyBtn.setEnabled(true);
-				cutBtn.setEnabled(true);
-				pastBtn.setEnabled(true);
-			}
+			invoker.setEndIndex(endIndex);
+			invoker.setBeginIndex(beginIndex);
+			
+			try {
+				invoker.play("setEndIndex");
+				invoker.play("setBeginIndex");
+			} catch (CommandException e1) { e1.printStackTrace();}
+			
+			copyBtn.setEnabled(true);
+			cutBtn.setEnabled(true);
+			pastBtn.setEnabled(true);
 		}
 		
 		if(e.getSource() == cutBtn) {
@@ -241,7 +238,5 @@ public class GuiDefinition implements KeyListener, ActionListener {
 				invoker.play("copy");
 			} catch (CommandException e1) {e1.printStackTrace();}
 		}
-	
-	
 	}
 }
