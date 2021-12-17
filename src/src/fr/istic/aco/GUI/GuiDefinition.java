@@ -47,7 +47,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	private JFrame frame;
 	private JPanel panel;
 	private JTextArea textArea;
-	private JButton selectBtn, copyBtn, cutBtn, pastBtn, undoBtn;
+	private JButton selectBtn, copyBtn, cutBtn, pastBtn, startRecordBtn, stopRecordBtn, replayBtn;
 	private JSpinner beginIndexSpinner;
 	private JSpinner endIndexSpinner;
 	
@@ -92,7 +92,9 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		this.copyBtn = new JButton("Copy");
 		this.cutBtn = new JButton("Cut");
 		this.pastBtn = new JButton("Past");
-		this.undoBtn = new JButton("Undo");
+		this.startRecordBtn = new JButton("Start recording");
+		this.stopRecordBtn = new JButton("Stop recording");
+		this.replayBtn = new JButton("Replay");
 		this.beginIndexSpinner = new JSpinner();
 		this.endIndexSpinner = new JSpinner();
 		
@@ -100,7 +102,9 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		copyBtn.addActionListener(this); copyBtn.setEnabled(false);
 		cutBtn.addActionListener(this); cutBtn.setEnabled(false);
 		pastBtn.addActionListener(this); pastBtn.setEnabled(false);
-		undoBtn.addActionListener(this); undoBtn.setEnabled(false);
+		startRecordBtn.addActionListener(this);
+		stopRecordBtn.addActionListener(this);
+		replayBtn.addActionListener(this);
 		
 		panel.add(beginIndexSpinner);
 		panel.add(endIndexSpinner);
@@ -108,7 +112,9 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		panel.add(copyBtn);
 		panel.add(cutBtn);
 		panel.add(pastBtn);
-		panel.add(undoBtn);
+		panel.add(startRecordBtn);
+		panel.add(stopRecordBtn);
+		panel.add(replayBtn);
 		
 		this.frame.setTitle("Simple Text Editor");
 		this.frame.setSize(750,780);
@@ -121,7 +127,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	public void keyPressed(KeyEvent e) {
 		
 		if(engine.getBufferContents() != "") {
-			undoBtn.setEnabled(true);
+			startRecordBtn.setEnabled(true);
 		}
 		
 		//Classical insertion
@@ -184,7 +190,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.getSource() == undoBtn) {
+		if(e.getSource() == startRecordBtn) {
 			try {
 				invoker.play("undo");
 			}
@@ -229,7 +235,8 @@ public class GuiDefinition implements KeyListener, ActionListener {
 				invoker.play("past");
 			} catch (CommandException e1) {e1.printStackTrace();}
 			
-			textArea.setText(engine.getBufferContents());
+			System.out.println(engine.getBufferContents());
+			textArea.setText(engine.getClipboardContents());
 		}
 		
 		if(e.getSource() == copyBtn) {
@@ -237,6 +244,18 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			try {
 				invoker.play("copy");
 			} catch (CommandException e1) {e1.printStackTrace();}
+		}
+		
+		if(e.getSource() == startRecordBtn) {
+			recorder.start();
+		}
+		
+		if(e.getSource() == stopRecordBtn) {
+			recorder.stop();
+		}
+		
+		if(e.getSource() == replayBtn) {
+			
 		}
 	}
 }
