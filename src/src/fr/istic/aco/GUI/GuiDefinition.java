@@ -10,6 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import fr.istic.aco.Commands.Command;
+import fr.istic.aco.Commands.CopySelectedTextCommand;
 import fr.istic.aco.Commands.CutSelectedTextCommand;
 import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
@@ -41,6 +42,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	Command deleteCommand;
 	Command cutCommand;
 	Command pastCommand;
+	Command copyCommand;
 	
 	private JFrame frame;
 	private JPanel panel;
@@ -62,6 +64,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
         this.deleteCommand = new DeleteCommand(engine, recorder, undoManager);
         this.cutCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
         this.pastCommand = new PasteClipboardCommand(engine, recorder, undoManager);
+        this.copyCommand = new CopySelectedTextCommand(engine, recorder, undoManager);
         invoker.addCommandToInvoker("insert", insertCommand);
         invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
         invoker.addCommandToInvoker("setEndIndex", setEndIndex);
@@ -69,6 +72,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
         invoker.addCommandToInvoker("delete", deleteCommand);
         invoker.addCommandToInvoker("cut", cutCommand);
         invoker.addCommandToInvoker("past", pastCommand);
+        invoker.addCommandToInvoker("copy", copyCommand);
 		
         this.frame = new JFrame();
 		this.panel = new JPanel();
@@ -227,6 +231,13 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			} catch (CommandException e1) {e1.printStackTrace();}
 			
 			textArea.setText(engine.getBufferContents());
+		}
+		
+		if(e.getSource() == copyBtn) {
+			
+			try {
+				invoker.play("copy");
+			} catch (CommandException e1) {e1.printStackTrace();}
 		}
 	
 	
