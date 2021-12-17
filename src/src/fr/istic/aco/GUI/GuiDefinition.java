@@ -196,10 +196,12 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			//Get the wanted selection indexes in the text field
 			String wantedSelection = selectionChoice.getText();
 			
-			if(IntegrityFunctions.isCorrecteSelection(wantedSelection)) {
+			if(CharacterFunctions.isCorrecteSelection(wantedSelection)) {
 				
 				int beginIndex = wantedSelection.charAt(0) - '0';
 				int endIndex = wantedSelection.charAt(2) - '0';
+				System.out.println(beginIndex);
+				System.out.println(endIndex);
 				
 				invoker.setEndIndex(endIndex);
 				invoker.setBeginIndex(beginIndex);
