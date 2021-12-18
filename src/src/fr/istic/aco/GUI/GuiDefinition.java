@@ -183,6 +183,9 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			catch (CommandException e1) {
 				e1.printStackTrace();
 			}
+			
+			textArea.setText(engine.getBufferContents());
+			textArea.updateUI();
 		}
 	}
 
@@ -224,7 +227,12 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		
 		if(e.getSource() == pastBtn) {
 			
+			invoker.setBeginIndex(engine.getBufferContents().length());
+			invoker.setEndIndex(engine.getBufferContents().length());
+			
 			try {
+				invoker.play("setEndIndex");
+				invoker.play("setBeginIndex");
 				invoker.play("past");
 			} catch (CommandException e1) {e1.printStackTrace();}
 			
@@ -255,7 +263,6 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			} catch (CommandException e1) {e1.printStackTrace();}
 			
 			textArea.setText(engine.getBufferContents());
-			System.out.println(engine.getBufferContents());
 		}
 	}
 }
