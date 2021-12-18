@@ -1,8 +1,7 @@
 package fr.istic.aco.Memento;
 
-/*
- * Memento interface implementation, dedicated to the concrete commands "setBeginIndexCommand" & "setEndIndexCommand".
- * @see : Memento, InsertCommand
+/**
+ * Memento interface implementation, dedicated to the concrete commands "setBeginIndexCommand" and "setEndIndexCommand".
  */
 public class MementoIndex implements Memento {
 	

@@ -6,7 +6,6 @@ import fr.istic.aco.Selection.SelectionImpl;
 /**
  * Implements the Engine that provides the user operations on the text editor
  * @author Niklas, Johann
- *
  */
 public class EngineImpl implements Engine {
 	
