@@ -62,12 +62,8 @@ class ReplayTests {
 	void replaySuccessiveInserts() throws CommandException {
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
 		Command replayCommand = new ReplayCommand(recorder);
-		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
-		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
 		invoker.addCommandToInvoker("replayCommand", replayCommand);
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
-		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
-		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
 		
 		recorder.start();
 		

@@ -11,7 +11,6 @@ import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
-import fr.istic.aco.Commands.ReplayCommand;
 import fr.istic.aco.Commands.UndoCommand;
 import fr.istic.aco.Commands.setBeginIndexCommand;
 import fr.istic.aco.Commands.setEndIndexCommand;
@@ -105,7 +104,7 @@ class UndoTests {
 	}
 	
 	@Test
-	void undoBlankDocuement() throws CommandException {
+	void undoSeveralTimesAnEmptyDocument() throws CommandException {
 		Command undoCommand = new UndoCommand(engine, undoManager);
 		invoker.addCommandToInvoker("undo", undoCommand);
 		
