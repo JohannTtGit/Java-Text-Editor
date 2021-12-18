@@ -59,6 +59,42 @@ class ReplayTests {
 	}
 	
 	@Test
+	void replaySuccessiveInserts() throws CommandException {
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command replayCommand = new ReplayCommand(recorder);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
+		invoker.addCommandToInvoker("replayCommand", replayCommand);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
+		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+		
+		recorder.start();
+		
+		invoker.setContentToInsert("H");
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert("e");
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert("l");
+		invoker.play("insertCommand");
+		
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert("o");
+		invoker.play("insertCommand");
+		
+		recorder.stop();
+		
+		assertEquals("olleH", engine.getBufferContents());
+		
+		invoker.play("replayCommand");
+		
+		assertEquals("olleHolleH", engine.getBufferContents());
+	}
+	
+	@Test
 	void replayInsertAndCutPaste() throws CommandException{
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
 		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
