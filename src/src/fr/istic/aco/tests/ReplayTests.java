@@ -43,6 +43,9 @@ class ReplayTests {
 	@Test
 	void replayUniqueInsert() throws CommandException {
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command replayCommand = new ReplayCommand(recorder);
+		invoker.addCommandToInvoker("replayCommand", replayCommand);
+		
 		invoker.addCommandToInvoker("insertCommand", insertCommand);
 		invoker.setContentToInsert("Hello world");
 		
@@ -50,8 +53,6 @@ class ReplayTests {
 		invoker.play("insertCommand");
 		recorder.stop();
 		
-		Command replayCommand = new ReplayCommand(recorder);
-		invoker.addCommandToInvoker("replayCommand", replayCommand);
 		invoker.play("replayCommand");
 		
 		assertEquals("Hello worldHello world", engine.getBufferContents());

@@ -17,6 +17,7 @@ import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
 import fr.istic.aco.Commands.PasteClipboardCommand;
+import fr.istic.aco.Commands.ReplayCommand;
 import fr.istic.aco.Commands.UndoCommand;
 import fr.istic.aco.Commands.setBeginIndexCommand;
 import fr.istic.aco.Commands.setEndIndexCommand;
@@ -43,6 +44,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	Command cutCommand;
 	Command pastCommand;
 	Command copyCommand;
+	Command replayCommand;
 	
 	private JFrame frame;
 	private JPanel panel;
@@ -66,6 +68,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
         this.cutCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
         this.pastCommand = new PasteClipboardCommand(engine, recorder, undoManager);
         this.copyCommand = new CopySelectedTextCommand(engine, recorder, undoManager);
+        this.replayCommand = new ReplayCommand(recorder);
         invoker.addCommandToInvoker("insert", insertCommand);
         invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
         invoker.addCommandToInvoker("setEndIndex", setEndIndex);
@@ -74,6 +77,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
         invoker.addCommandToInvoker("cut", cutCommand);
         invoker.addCommandToInvoker("past", pastCommand);
         invoker.addCommandToInvoker("copy", copyCommand);
+        invoker.addCommandToInvoker("replay", replayCommand);
 		
         this.frame = new JFrame();
 		this.panel = new JPanel();
@@ -103,8 +107,8 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		cutBtn.addActionListener(this); cutBtn.setEnabled(false);
 		pastBtn.addActionListener(this); pastBtn.setEnabled(false);
 		startRecordBtn.addActionListener(this);
-		stopRecordBtn.addActionListener(this);
-		replayBtn.addActionListener(this);
+		stopRecordBtn.addActionListener(this); stopRecordBtn.setEnabled(false);
+		replayBtn.addActionListener(this); replayBtn.setEnabled(false);
 		
 		panel.add(beginIndexSpinner);
 		panel.add(endIndexSpinner);
@@ -190,17 +194,6 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.getSource() == startRecordBtn) {
-			try {
-				invoker.play("undo");
-			}
-			catch (CommandException e1) {
-				e1.printStackTrace();
-			}
-			
-			textArea.setText(engine.getBufferContents());
-		}
-		
 		if(e.getSource() == selectBtn) {
 			
 			//Get the wanted selection values
@@ -248,14 +241,21 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		
 		if(e.getSource() == startRecordBtn) {
 			recorder.start();
+			stopRecordBtn.setEnabled(true);
 		}
 		
 		if(e.getSource() == stopRecordBtn) {
 			recorder.stop();
+			replayBtn.setEnabled(true);
 		}
 		
 		if(e.getSource() == replayBtn) {
+			try {
+				invoker.play("replay");
+			} catch (CommandException e1) {e1.printStackTrace();}
 			
+			textArea.setText(engine.getBufferContents());
+			System.out.println(engine.getBufferContents());
 		}
 	}
 }
