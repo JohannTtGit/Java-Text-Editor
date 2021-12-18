@@ -1,7 +1,6 @@
 package fr.istic.aco.Recorder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import fr.istic.aco.Commands.CommandGlobal;
@@ -55,9 +54,6 @@ public class RecorderImpl implements Recorder {
 		while(iterStates.hasNext()) {
 			memento_to_iterate.add(iterStates.next());
 		}
-		
-//		Collections.reverse(command_to_iterate);
-//		Collections.reverse(memento_to_iterate);
 		
 		for(int i=0; i < command_to_iterate.size(); i++) {
 			command = command_history.get(i);

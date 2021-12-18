@@ -143,7 +143,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			
 			invoker.setContentToInsert(String.valueOf(e.getKeyChar()));
 			
-			int currentPosition = textArea.getCaretPosition()+1;
+			int currentPosition = engine.getBufferContents().length()+1;
 			
 			try {
 				invoker.play("insert");
