@@ -142,11 +142,9 @@ class ReplayTests {
 		invoker.addCommandToInvoker("copySelectedTextCommand", copySelectedTextCommand);
 		invoker.addCommandToInvoker("pasteCommand", pasteCommand);
 		
-		
 		invoker.setContentToInsert("Hello world");
 		invoker.setBeginIndex(0);
 		invoker.setEndIndex(3);
-		
 		
 		recorder.start();
 		

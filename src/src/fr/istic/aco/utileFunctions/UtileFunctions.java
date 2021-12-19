@@ -14,6 +14,7 @@ public class UtileFunctions {
 		ArrayList<CommandGlobal> result = new ArrayList<>();
 		
 		Iterator<CommandGlobal> iterator = arrayListToCopy.iterator();
+		
 		while(iterator.hasNext()) {
 			result.add(iterator.next());
 		}
@@ -26,6 +27,7 @@ public class UtileFunctions {
 		ArrayList<Memento> result = new ArrayList<>();
 		
 		Iterator<Memento> iterator = arrayListToCopy.iterator();
+		
 		while(iterator.hasNext()) {
 			result.add(iterator.next());
 		}
