@@ -40,6 +40,20 @@ class CommandPatternTests {
 	}
 	
 	@Test
+	void insertCommandSeveralTimes() throws CommandException {
+		Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		
+		invoker.setContentToInsert("Hello world");
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert("How are you ?");
+		invoker.play("insertCommand");
+		
+		assertEquals("How are you ?Hello world", engine.getBufferContents());
+	}
+	
+	@Test
 	void setBeginAndEndIndex() throws CommandException {
 		Command insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
 		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);

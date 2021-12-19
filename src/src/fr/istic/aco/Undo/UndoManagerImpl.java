@@ -28,30 +28,31 @@ public class UndoManagerImpl implements UndoManager {
 		
 		//Remove before copy otherwise two consecutive undo cannot work
 		if(command_history.size() > 0) {
+			
 			command_history.remove(command_history.size() - 1);
 			savedStates.remove(savedStates.size() - 1);
-		}
-		
-		
-		ArrayList<CommandGlobal> commandToIterate = new ArrayList<>(command_history);
-		List<Memento> statesToIterate = new ArrayList<>(savedStates);
-		
-		Collections.reverse(commandToIterate);
-		Collections.reverse(statesToIterate);
-		
-		CommandGlobal command = null;
-		
-		for(int i=0; i < commandToIterate.size(); i++) {
-			command = commandToIterate.get(i);
-			command.restoreFromMemento(statesToIterate.get(i));
-			command.execute();
-		}
-		
-		if(command_history.size() > 0) {
-			command_history.remove(command_history.size() - 1);
-			savedStates.remove(savedStates.size() - 1);
-			command_history.remove(command_history.size() - 1);
-			savedStates.remove(savedStates.size() - 1);
+			
+			ArrayList<CommandGlobal> commandToIterate = new ArrayList<>(command_history);
+			List<Memento> statesToIterate = new ArrayList<>(savedStates);
+			
+//			Collections.reverse(commandToIterate);
+//			Collections.reverse(statesToIterate);
+			
+			CommandGlobal command = null;
+			
+			for(int i=0; i < commandToIterate.size(); i++) {
+				command = commandToIterate.get(i);
+				command.restoreFromMemento(statesToIterate.get(i));
+				command.execute();
+			}
+			
+			//Check a second because elements have been removed from lists
+			if(command_history.size() > 0) {
+				command_history.remove(command_history.size() - 1);
+				savedStates.remove(savedStates.size() - 1);
+				command_history.remove(command_history.size() - 1);
+				savedStates.remove(savedStates.size() - 1);
+			}
 		}
 	}
 

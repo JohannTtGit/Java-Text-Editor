@@ -11,6 +11,7 @@ import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
 import fr.istic.aco.Commands.InvokerImpl;
+import fr.istic.aco.Commands.ReplayCommand;
 import fr.istic.aco.Commands.UndoCommand;
 import fr.istic.aco.Commands.setBeginIndexCommand;
 import fr.istic.aco.Commands.setEndIndexCommand;
@@ -55,7 +56,7 @@ class UndoTests {
 		
 		invoker.play("undo");
 		
-		assertEquals("Hello world. How are you ?", engine.getBufferContents());
+		assertEquals(" How are you ?Hello world.", engine.getBufferContents());
 	}
 	
 	@Test
@@ -113,6 +114,34 @@ class UndoTests {
 		invoker.play("undo");
 		
 		assertEquals("", engine.getBufferContents());
+	}
+	
+	@Test
+	void undoSuccessiveInserts() throws CommandException {
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command undoCommand = new UndoCommand(engine, undoManager);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("undo", undoCommand);
+		
+		invoker.setContentToInsert("H");
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert("e");
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert("l");
+		invoker.play("insertCommand");
+		
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert("o");
+		invoker.play("insertCommand");
+		
+		assertEquals("olleH", engine.getBufferContents());
+		
+		invoker.play("undo");
+		
+		assertEquals("lleH", engine.getBufferContents());
 	}
 	
 	@Test

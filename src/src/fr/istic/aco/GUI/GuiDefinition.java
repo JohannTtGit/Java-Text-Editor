@@ -49,7 +49,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	private JFrame frame;
 	private JPanel panel;
 	private JTextArea textArea;
-	private JButton selectBtn, copyBtn, cutBtn, pastBtn, startRecordBtn, stopRecordBtn, replayBtn;
+	private JButton selectBtn, copyBtn, cutBtn, pastBtn, startRecordBtn, stopRecordBtn, replayBtn, undoBtn;
 	private JSpinner beginIndexSpinner;
 	private JSpinner endIndexSpinner;
 	
@@ -101,6 +101,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		this.replayBtn = new JButton("Replay");
 		this.beginIndexSpinner = new JSpinner();
 		this.endIndexSpinner = new JSpinner();
+		this.undoBtn = new JButton("Undo");
 		
 		selectBtn.addActionListener(this);
 		copyBtn.addActionListener(this); copyBtn.setEnabled(false);
@@ -109,6 +110,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		startRecordBtn.addActionListener(this);
 		stopRecordBtn.addActionListener(this); stopRecordBtn.setEnabled(false);
 		replayBtn.addActionListener(this); replayBtn.setEnabled(false);
+		undoBtn.addActionListener(this);
 		
 		panel.add(beginIndexSpinner);
 		panel.add(endIndexSpinner);
@@ -119,6 +121,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		panel.add(startRecordBtn);
 		panel.add(stopRecordBtn);
 		panel.add(replayBtn);
+		panel.add(undoBtn);
 		
 		this.frame.setTitle("Simple Text Editor");
 		this.frame.setSize(750,780);
@@ -263,6 +266,15 @@ public class GuiDefinition implements KeyListener, ActionListener {
 			} catch (CommandException e1) {e1.printStackTrace();}
 			
 			textArea.setText(engine.getBufferContents());
+		}
+		
+		if(e.getSource() == undoBtn) {
+			System.out.println(engine.getBufferContents());
+			try {
+				invoker.play("undo");
+			} catch (CommandException e1) {e1.printStackTrace();}
+			
+//			textArea.setText(engine.getBufferContents());
 		}
 	}
 }
