@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.istic.aco.Commands.Command;
 import fr.istic.aco.Commands.CommandGlobal;
+import fr.istic.aco.Commands.CutSelectedTextCommand;
 import fr.istic.aco.Commands.DeleteCommand;
 import fr.istic.aco.Commands.InsertCommand;
 import fr.istic.aco.Commands.Invoker;
@@ -167,6 +168,8 @@ class UndoTests {
 		invoker.play("setBeginIndex");
 		invoker.play("deleteCommand");
 		
+		assertEquals("lo world", engine.getBufferContents());
+		
 		invoker.play("undo");
 		assertEquals("Hello world", engine.getBufferContents());
 		assertEquals(0, engine.getSelection().getBeginIndex());
@@ -201,6 +204,31 @@ class UndoTests {
 		assertEquals("Hello world", engine.getBufferContents());
 		assertEquals(0, engine.getSelection().getBeginIndex());
     	assertEquals(3, engine.getSelection().getEndIndex());
+	}
+	
+	@Test
+	void undoCutCommand() throws CommandException {
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command cutSelectedTextCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
+		Command setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
+		Command setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
+		Command undoCommand = new UndoCommand(engine, undoManager);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("cut", cutSelectedTextCommand);
+		invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
+		invoker.addCommandToInvoker("setEndIndex", setEndIndex);
+		invoker.addCommandToInvoker("undo", undoCommand);
+		
+		invoker.setContentToInsert("Hello world");
+		invoker.setBeginIndex(0);
+		invoker.setEndIndex(1);
+		
+		invoker.play("insertCommand");
+		invoker.play("setEndIndex");
+		invoker.play("setBeginIndex");
+		invoker.play("cut");
+		
+		assertEquals("ello world", engine.getBufferContents());
 	}
 
 

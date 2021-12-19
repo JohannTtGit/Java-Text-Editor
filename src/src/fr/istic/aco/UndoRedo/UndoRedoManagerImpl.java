@@ -15,8 +15,6 @@ public class UndoRedoManagerImpl implements UndoRedoManager {
 	private List<CommandGlobal> futur_command_history = new ArrayList<CommandGlobal>();
 	private List<Memento> futur_savedStates = new ArrayList<Memento>();
 	
-	private int nbUndo = -1; //Start at -1 to have 0 when the first command is undone
-	
 
 	@Override
 	public void save(CommandGlobal command) {
@@ -62,8 +60,6 @@ public class UndoRedoManagerImpl implements UndoRedoManager {
 				command.execute();
 			}
 
-			this.nbUndo ++;
-
 			//Remove commands added in history during the replay
 			if(command_history.size() > 0) {
 				for(int i=nbCommandToReplay; i < command_history.size(); i++) {
@@ -78,50 +74,16 @@ public class UndoRedoManagerImpl implements UndoRedoManager {
 	public void redo() {
 		
 		if(this.futur_command_history.size() > 0) {
-//			ArrayList<CommandGlobal> futureCommandToIterate = UtileFunctions.deepCommandsArrayListCopy(futur_command_history);
-//			List<Memento> futurStatesToIterate = UtileFunctions.deepMementosArrayListCopy(futur_savedStates);
+			CommandGlobal command = futur_command_history.get(futur_command_history.size() - 1);
 
-			CommandGlobal command = null;
-			
-//			int limit = this.nbUndo;
-//			
-//			for(int i=0; i <= limit; i++) {
-//				command = futureCommandToIterate.get(i);
-//				
-//				if(futurStatesToIterate.get(i) != null) {
-//					command.restoreFromMemento(futurStatesToIterate.get(i));
-//				}
-//				
-//				command.execute();
-//			}
-			
-			//Other solution: Redo the last command and remove it from the list
-			
-			command = futur_command_history.get(futur_command_history.size() - 1);
-			
 			if(futur_command_history.get(futur_command_history.size() - 1) != null) {
 				command.restoreFromMemento(futur_savedStates.get(futur_savedStates.size() - 1));
 			}
-			
+
 			command.execute();
-			
+
 			futur_command_history.remove(futur_command_history.size() - 1);
 			futur_savedStates.remove(futur_savedStates.size() - 1);
-			
-			
-//			command = futureCommandToIterate.get(this.nbUndo);
-//			
-//			if(futurStatesToIterate.get(this.nbUndo) != null) {
-//				command.restoreFromMemento(futurStatesToIterate.get(this.nbUndo));
-//			}
-//			
-//			command.execute();
-//			
-//			this.nbUndo --;
-		}
-		else {
-			System.out.println("hey");
 		}
 	}
-
 }
