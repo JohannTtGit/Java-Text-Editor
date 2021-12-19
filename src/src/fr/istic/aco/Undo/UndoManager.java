@@ -14,4 +14,9 @@ public interface UndoManager extends CareTaker {
 	 * beginning all the remaining.
 	 */
 	public void undo();
+	
+	/**
+	 * Redo an undone command
+	 */
+	public void redo();
 }
