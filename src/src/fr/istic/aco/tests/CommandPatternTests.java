@@ -9,8 +9,8 @@ import fr.istic.aco.Commands.*;
 import fr.istic.aco.Exceptions.CommandException;
 import fr.istic.aco.Recorder.Recorder;
 import fr.istic.aco.Recorder.RecorderImpl;
-import fr.istic.aco.Undo.UndoManager;
-import fr.istic.aco.Undo.UndoManagerImpl;
+import fr.istic.aco.UndoRedo.UndoRedoManager;
+import fr.istic.aco.UndoRedo.UndoRedoManagerImpl;
 import fr.istic.aco.editor.*;
 
 class CommandPatternTests {
@@ -18,14 +18,14 @@ class CommandPatternTests {
 	Engine engine;
 	Invoker invoker;
 	Recorder recorder;
-	UndoManager undoManager;
+	UndoRedoManager undoManager;
 
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
         recorder = new RecorderImpl();
-        undoManager = new UndoManagerImpl();
+        undoManager = new UndoRedoManagerImpl();
     }
 	
 	@Test

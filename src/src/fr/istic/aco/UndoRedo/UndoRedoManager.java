@@ -1,4 +1,4 @@
-package fr.istic.aco.Undo;
+package fr.istic.aco.UndoRedo;
 
 import fr.istic.aco.Memento.CareTaker;
 
@@ -7,7 +7,7 @@ import fr.istic.aco.Memento.CareTaker;
  * In the context of the Memento design pattern features, embodies the CareTaker role
  */
 
-public interface UndoManager extends CareTaker {
+public interface UndoRedoManager extends CareTaker {
 	
 	/**
 	 * Undo a command by removing the last command and replaying from the

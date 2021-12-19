@@ -15,8 +15,8 @@ import fr.istic.aco.Commands.UndoCommand;
 import fr.istic.aco.Exceptions.CommandException;
 import fr.istic.aco.Recorder.Recorder;
 import fr.istic.aco.Recorder.RecorderImpl;
-import fr.istic.aco.Undo.UndoManager;
-import fr.istic.aco.Undo.UndoManagerImpl;
+import fr.istic.aco.UndoRedo.UndoRedoManager;
+import fr.istic.aco.UndoRedo.UndoRedoManagerImpl;
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 
@@ -25,14 +25,14 @@ public class RedoTests {
 	Engine engine;
 	Invoker invoker;
 	Recorder recorder;
-	UndoManager undoManager;
+	UndoRedoManager undoManager;
 	
 	@BeforeEach
     void setUp() {
         engine = new EngineImpl();
         invoker = new InvokerImpl();
         recorder = new RecorderImpl();
-        undoManager = new UndoManagerImpl();
+        undoManager = new UndoRedoManagerImpl();
     }
 	
 	@Test
@@ -49,6 +49,18 @@ public class RedoTests {
 		
 		invoker.play("redo");
 		assertEquals("Hello world", engine.getBufferContents());
+	}
+	
+	@Test
+	void redoEmptyBuffer() throws CommandException {
+		Command redoCommand = new RedoCommand(engine, undoManager);
+		invoker.addCommandToInvoker("redo", redoCommand);
+		
+		assertEquals("", engine.getBufferContents());
+		
+		invoker.play("redo");
+		
+		assertEquals("", engine.getBufferContents());
 	}
 	
 	@Test
@@ -73,7 +85,7 @@ public class RedoTests {
 	}
 	
 	@Test
-	void redoTwoTimeInsertCommand() throws CommandException {
+	void undoRedoTwoTimesInsertCommand() throws CommandException {
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
 		Command undoCommand = new UndoCommand(engine, undoManager);
 		Command redoCommand = new RedoCommand(engine, undoManager);
@@ -90,10 +102,12 @@ public class RedoTests {
 		assertEquals(" 123Hello world", engine.getBufferContents());
 
 		invoker.play("undo");
-		assertEquals("Hello world", engine.getBufferContents());
+		invoker.play("undo");
+		assertEquals("", engine.getBufferContents());
 		
 		invoker.play("redo");
-		assertEquals(" 123Hello world", engine.getBufferContents());
+		invoker.play("redo");
+		assertEquals("Hello world 123", engine.getBufferContents());
 	}
 	
 	

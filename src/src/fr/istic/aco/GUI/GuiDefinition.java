@@ -23,8 +23,8 @@ import fr.istic.aco.Commands.setEndIndexCommand;
 import fr.istic.aco.Exceptions.CommandException;
 import fr.istic.aco.Recorder.Recorder;
 import fr.istic.aco.Recorder.RecorderImpl;
-import fr.istic.aco.Undo.UndoManager;
-import fr.istic.aco.Undo.UndoManagerImpl;
+import fr.istic.aco.UndoRedo.UndoRedoManager;
+import fr.istic.aco.UndoRedo.UndoRedoManagerImpl;
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 
@@ -33,7 +33,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	private Engine engine;
 	private Invoker invoker;
 	private Recorder recorder;
-	private UndoManager undoManager;
+	private UndoRedoManager undoManager;
 	
 	Command insertCommand;
 	Command setBeginIndex;
@@ -56,7 +56,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		this.engine = new EngineImpl();
         this.invoker = new InvokerImpl();
         this.recorder = new RecorderImpl();
-        this.undoManager = new UndoManagerImpl();
+        this.undoManager = new UndoRedoManagerImpl();
         
         this.insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
         this.setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);

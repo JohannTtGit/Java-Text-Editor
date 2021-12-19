@@ -1,4 +1,4 @@
-package fr.istic.aco.Undo;
+package fr.istic.aco.UndoRedo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import fr.istic.aco.Commands.CommandGlobal;
 import fr.istic.aco.Memento.Memento;
 import fr.istic.aco.utileFunctions.UtileFunctions;
 
-public class UndoManagerImpl implements UndoManager {
+public class UndoRedoManagerImpl implements UndoRedoManager {
 	
 	private List<CommandGlobal> command_history = new ArrayList<CommandGlobal>();
 	private List<Memento> savedStates = new ArrayList<Memento>();
@@ -78,15 +78,27 @@ public class UndoManagerImpl implements UndoManager {
 
 			CommandGlobal command = null;
 			
-			command = futureCommandToIterate.get(this.nbUndo);
+			int i = this.nbUndo;
 			
-			if(futurStatesToIterate.get(this.nbUndo) != null) {
-				command.restoreFromMemento(futurStatesToIterate.get(this.nbUndo));
+			for(i=0; i <= this.nbUndo; i++) {
+				command = futureCommandToIterate.get(i);
+				
+				if(futurStatesToIterate.get(i) != null) {
+					command.restoreFromMemento(futurStatesToIterate.get(i));
+				}
+				
+				command.execute();
 			}
 			
-			command.execute();
+//			command = futureCommandToIterate.get(this.nbUndo);
+//			
+//			if(futurStatesToIterate.get(this.nbUndo) != null) {
+//				command.restoreFromMemento(futurStatesToIterate.get(this.nbUndo));
+//			}
+//			
+//			command.execute();
 			
-			this.nbUndo --;
+//			this.nbUndo --;
 		}
 	}
 
