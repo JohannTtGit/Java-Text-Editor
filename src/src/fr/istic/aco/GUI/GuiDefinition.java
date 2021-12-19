@@ -138,7 +138,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		}
 		
 		//Classical insertion
-		if(Character.isLetter(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_SPACE || Character.isDigit(e.getKeyChar())) {
+		if(Character.isLetter(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_SPACE || Character.isDigit(e.getKeyChar()) || String.valueOf(e.getKeyChar()).matches(".*[,;:!?./§&\"'()].*")) {
 			
 			//Update the textArea content with the buffer content because
 			// we only want to use the TextEditor features
