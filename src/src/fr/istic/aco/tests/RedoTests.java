@@ -106,6 +106,7 @@ public class RedoTests {
 		assertEquals("", engine.getBufferContents());
 		
 		invoker.play("redo");
+		assertEquals(" 123", engine.getBufferContents());
 		invoker.play("redo");
 		assertEquals("Hello world 123", engine.getBufferContents());
 	}

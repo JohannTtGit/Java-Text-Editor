@@ -41,8 +41,7 @@ public class RecorderImpl implements Recorder {
 		
 		CommandGlobal command = null;
 		
-		//Copy before looping, because execute() add the restored command to the history -> Infinite loop
-		//Execute a deep copy
+		//Deep copy before looping, because execute() add the restored command to the history when replaying -> Infinite loop
 		List<CommandGlobal> command_to_iterate = UtileFunctions.deepCommandsArrayListCopy(command_history);
 		List<Memento> memento_to_iterate = UtileFunctions.deepMementosArrayListCopy(savedStates);
 		
