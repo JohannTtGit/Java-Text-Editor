@@ -36,7 +36,23 @@ public class RedoTests {
     }
 	
 	@Test
-	void redoInsertCommand() throws CommandException {
+	void redoWithoutHavingUndone() throws CommandException {
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command redoCommand = new RedoCommand(engine, undoManager);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("redo", redoCommand);
+		
+		invoker.setContentToInsert("Hello world");
+		invoker.play("insertCommand");
+		
+		assertEquals("Hello world", engine.getBufferContents());
+		
+		invoker.play("redo");
+		assertEquals("Hello world", engine.getBufferContents());
+	}
+	
+	@Test
+	void redoOnceInsertCommand() throws CommandException {
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
 		Command undoCommand = new UndoCommand(engine, undoManager);
 		Command redoCommand = new RedoCommand(engine, undoManager);
@@ -44,19 +60,41 @@ public class RedoTests {
 		invoker.addCommandToInvoker("undo", undoCommand);
 		invoker.addCommandToInvoker("redo", redoCommand);
 		
-		invoker.setContentToInsert("Hello world.");
+		invoker.setContentToInsert("Hello world");
 		invoker.play("insertCommand");
 		
-		invoker.setContentToInsert(" How are you ?");
-		invoker.play("insertCommand");
-		
-		invoker.setContentToInsert(" Let us code");
-		invoker.play("insertCommand");
+		assertEquals("Hello world", engine.getBufferContents());
 		
 		invoker.play("undo");
-		assertEquals(" How are you ?Hello world.", engine.getBufferContents());
+		assertEquals("", engine.getBufferContents());
 		
 		invoker.play("redo");
-		assertEquals(" Let us code How are you ?Hello world.", engine.getBufferContents());
+		assertEquals("Hello world", engine.getBufferContents());
 	}
+	
+	@Test
+	void redoTwoTimeInsertCommand() throws CommandException {
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command undoCommand = new UndoCommand(engine, undoManager);
+		Command redoCommand = new RedoCommand(engine, undoManager);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("undo", undoCommand);
+		invoker.addCommandToInvoker("redo", redoCommand);
+		
+		invoker.setContentToInsert("Hello world");
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert(" 123");
+		invoker.play("insertCommand");
+		
+		assertEquals(" 123Hello world", engine.getBufferContents());
+
+		invoker.play("undo");
+		assertEquals("Hello world", engine.getBufferContents());
+		
+		invoker.play("redo");
+		assertEquals(" 123Hello world", engine.getBufferContents());
+	}
+	
+	
 }

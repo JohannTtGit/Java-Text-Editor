@@ -80,6 +80,7 @@ class UndoTests {
 		assertEquals("Hello world.", engine.getBufferContents());
 	}
 	
+	
 	@Test
 	void undoUntilBlankDocument() throws CommandException {
 		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);

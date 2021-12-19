@@ -1,10 +1,10 @@
 package fr.istic.aco.Recorder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import fr.istic.aco.Commands.CommandGlobal;
 import fr.istic.aco.Memento.Memento;
+import fr.istic.aco.utileFunctions.UtileFunctions;
 
 public class RecorderImpl implements Recorder {
 	
@@ -42,18 +42,9 @@ public class RecorderImpl implements Recorder {
 		CommandGlobal command = null;
 		
 		//Copy before looping, because execute() add the restored command to the history -> Infinite loop
-		List<CommandGlobal> command_to_iterate = new ArrayList<>();
-		List<Memento> memento_to_iterate = new ArrayList<>();
-		
-		Iterator<CommandGlobal> iterCommand = command_history.iterator();
-		while(iterCommand.hasNext()) {
-			command_to_iterate.add(iterCommand.next());
-		}
-		
-		Iterator<Memento> iterStates = savedStates.iterator();
-		while(iterStates.hasNext()) {
-			memento_to_iterate.add(iterStates.next());
-		}
+		//Execute a deep copy
+		List<CommandGlobal> command_to_iterate = UtileFunctions.deepCommandsArrayListCopy(command_history);
+		List<Memento> memento_to_iterate = UtileFunctions.deepMementosArrayListCopy(savedStates);
 		
 		for(int i=0; i < command_to_iterate.size(); i++) {
 			command = command_history.get(i);
