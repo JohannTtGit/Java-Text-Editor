@@ -88,30 +88,6 @@ public class UndoManagerImpl implements UndoManager {
 			
 			this.nbUndo --;
 		}
-		
-		else
-		{
-			//Il faut replay tout car redo 
-		}
-		
-
-//		if(futur_command_history.size() == 1) {
-//			
-//			//LE PROBLEME EST LA
-//			int nbRedoToDo = futureCommandToIterate.size() - this.nbUndo;
-//
-//			for(int i=0; i < nbRedoToDo ; i++) {
-//				command = futureCommandToIterate.get(i);
-//
-//				if(futurStatesToIterate.get(i) != null) {
-//					command.restoreFromMemento(futurStatesToIterate.get(i));
-//				}
-//
-//				command.execute();
-//
-//				this.nbUndo --;
-//			}
-//		}
 	}
 
 }

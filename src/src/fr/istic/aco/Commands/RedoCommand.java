@@ -15,9 +15,6 @@ public class RedoCommand implements Command {
 
 	@Override
 	public void execute() {
-//		engine.clearBuffer();
-//		engine.getSelection().setEndIndex(0);
-//		engine.getSelection().setBeginIndex(0);
 		undoManager.redo();
 	}
 }

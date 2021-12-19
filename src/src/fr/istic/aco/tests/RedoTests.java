@@ -71,30 +71,30 @@ public class RedoTests {
 		invoker.play("redo");
 		assertEquals("Hello world", engine.getBufferContents());
 	}
-//	
-//	@Test
-//	void redoTwoTimeInsertCommand() throws CommandException {
-//		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
-//		Command undoCommand = new UndoCommand(engine, undoManager);
-//		Command redoCommand = new RedoCommand(engine, undoManager);
-//		invoker.addCommandToInvoker("insertCommand", insertCommand);
-//		invoker.addCommandToInvoker("undo", undoCommand);
-//		invoker.addCommandToInvoker("redo", redoCommand);
-//		
-//		invoker.setContentToInsert("Hello world");
-//		invoker.play("insertCommand");
-//		
-//		invoker.setContentToInsert(" 123");
-//		invoker.play("insertCommand");
-//		
-//		assertEquals(" 123Hello world", engine.getBufferContents());
-//
-//		invoker.play("undo");
-//		assertEquals("Hello world", engine.getBufferContents());
-//		
-//		invoker.play("redo");
-//		assertEquals(" 123Hello world", engine.getBufferContents());
-//	}
+	
+	@Test
+	void redoTwoTimeInsertCommand() throws CommandException {
+		CommandGlobal insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
+		Command undoCommand = new UndoCommand(engine, undoManager);
+		Command redoCommand = new RedoCommand(engine, undoManager);
+		invoker.addCommandToInvoker("insertCommand", insertCommand);
+		invoker.addCommandToInvoker("undo", undoCommand);
+		invoker.addCommandToInvoker("redo", redoCommand);
+		
+		invoker.setContentToInsert("Hello world");
+		invoker.play("insertCommand");
+		
+		invoker.setContentToInsert(" 123");
+		invoker.play("insertCommand");
+		
+		assertEquals(" 123Hello world", engine.getBufferContents());
+
+		invoker.play("undo");
+		assertEquals("Hello world", engine.getBufferContents());
+		
+		invoker.play("redo");
+		assertEquals(" 123Hello world", engine.getBufferContents());
+	}
 	
 	
 }
