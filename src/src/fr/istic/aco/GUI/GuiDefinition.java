@@ -39,12 +39,12 @@ public class GuiDefinition implements KeyListener, ActionListener {
 	Command insertCommand;
 	Command setBeginIndex;
 	Command setEndIndex;
-	Command undoCommand;
 	Command deleteCommand;
 	Command cutCommand;
 	Command pastCommand;
 	Command copyCommand;
 	Command replayCommand;
+	Command undoCommand;
 	
 	private JFrame frame;
 	private JPanel panel;
@@ -63,21 +63,21 @@ public class GuiDefinition implements KeyListener, ActionListener {
         this.insertCommand = new InsertCommand(engine, invoker, recorder, undoManager);
         this.setBeginIndex = new setBeginIndexCommand(engine, invoker, recorder, undoManager);
         this.setEndIndex = new setEndIndexCommand(engine, invoker, recorder, undoManager);
-        this.undoCommand = new UndoCommand(engine, undoManager);
         this.deleteCommand = new DeleteCommand(engine, recorder, undoManager);
         this.cutCommand = new CutSelectedTextCommand(engine, recorder, undoManager);
         this.pastCommand = new PasteClipboardCommand(engine, recorder, undoManager);
         this.copyCommand = new CopySelectedTextCommand(engine, recorder, undoManager);
         this.replayCommand = new ReplayCommand(recorder);
+        this.undoCommand = new UndoCommand(engine, undoManager);
         invoker.addCommandToInvoker("insert", insertCommand);
         invoker.addCommandToInvoker("setBeginIndex", setBeginIndex);
         invoker.addCommandToInvoker("setEndIndex", setEndIndex);
-        invoker.addCommandToInvoker("undo", undoCommand);
         invoker.addCommandToInvoker("delete", deleteCommand);
         invoker.addCommandToInvoker("cut", cutCommand);
         invoker.addCommandToInvoker("past", pastCommand);
         invoker.addCommandToInvoker("copy", copyCommand);
         invoker.addCommandToInvoker("replay", replayCommand);
+        invoker.addCommandToInvoker("undo", undoCommand);
 		
         this.frame = new JFrame();
 		this.panel = new JPanel();
@@ -138,7 +138,7 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		}
 		
 		//Classical insertion
-		if(Character.isLetter(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_SPACE || Character.isDigit(e.getKeyChar()) || String.valueOf(e.getKeyChar()).matches(".*[,;:!?./§&\"'()].*")) {
+		if(Character.isLetter(e.getKeyChar()) || e.getKeyCode() == KeyEvent.VK_SPACE || Character.isDigit(e.getKeyChar()) || String.valueOf(e.getKeyChar()).matches("[,;:!?./§&\"'()]")) {
 			
 			//Update the textArea content with the buffer content because
 			// we only want to use the TextEditor features
@@ -269,12 +269,14 @@ public class GuiDefinition implements KeyListener, ActionListener {
 		}
 		
 		if(e.getSource() == undoBtn) {
-			System.out.println(engine.getBufferContents());
+			
 			try {
 				invoker.play("undo");
 			} catch (CommandException e1) {e1.printStackTrace();}
 			
-//			textArea.setText(engine.getBufferContents());
+			System.out.println(engine.getBufferContents());
+			textArea.setText(engine.getBufferContents());
+			textArea.updateUI();
 		}
 	}
 }

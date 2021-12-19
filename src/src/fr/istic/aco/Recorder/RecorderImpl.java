@@ -9,7 +9,7 @@ import fr.istic.aco.Memento.Memento;
 public class RecorderImpl implements Recorder {
 	
 	private List<CommandGlobal> command_history = new ArrayList<>();
-	List<Memento> savedStates = new ArrayList<>();
+	private List<Memento> savedStates = new ArrayList<>();
 	
 	private boolean record = false;
 	
