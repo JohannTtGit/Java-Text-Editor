@@ -1,0 +1,10 @@
+fr.istic.aco.Commands
+fr.istic.aco.editor
+fr.istic.aco.Exceptions
+fr.istic.aco.GUI
+fr.istic.aco.Memento
+fr.istic.aco.Recorder
+fr.istic.aco.Selection
+fr.istic.aco.tests
+fr.istic.aco.UndoRedo
+fr.istic.aco.utileFunctions
