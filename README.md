@@ -5,4 +5,4 @@ The code is covered by JUnit tests.
 # Use of branches
 Four branches are available:
 - HEAD/master : Project documentation ("Report_JT_NB.pdf"), UML diagram ("TextEditor_V3_UML_JT_NB.pdf") and Javadoc.
-- V1-V2-V3 : Each of these branches brings a new feature (refer to the project description for further informations.
+- V1-V2-V3 : Each of these branches brings a new feature (refer to the project description for further information.
